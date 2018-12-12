@@ -1,0 +1,88 @@
+<h2><%= @book.name %> を編集する</h2>
+
+<section id="book_edit_main" data-month="<%= @month %>" data-year="<%= @year %>">
+  <ul class="nomarker flex">
+    <li>
+      <section id="book_edit_receipts">
+        <div class="book_edit_table">
+          <table>
+            <thead>
+              <tr>
+                <th colspan="4">Receipts</th>
+              </tr>
+              <tr>
+                <th>Day</th>
+                <th>Store</th>
+                <th>Price</th>
+                <th>-</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @receipts.each do |receipt| %>
+                <% day = receipt.pay_date.day %>
+                <tr class="book_edit_table_row" data-rowid="<%= receipt.id %>">
+                  <td><input class="column_pay_date" value="<%= day %>"></td>
+                  <td><input class="column_store" value="<%= Store.find(receipt.store_id).name %>"></td></td>
+                  <td><input class="column_price" value="<%= receipt.price %>"></td>
+                  <td>
+                    <button class="book_edit_send_btn" data-rowid="<%= receipt.id %>" data-rowtype="receipt">send</button>
+                    <button class="book_edit_delete_btn" data-rowid="<%= receipt.id %>" data-rowtype="receipt">delete</button>
+                  </td>
+                </tr>
+              <% end %>
+                <tr class="book_edit_table_new_row">
+                  <td><input class="column_pay_date" value=""></td>
+                  <td><input class="column_store" value=""></td>
+                  <td><input class="column_price" value=""></td>
+                  <td>
+                    <button class="book_edit_send_btn" data-rowid="-1" data-rowtype="receipt">new</button>
+                  </td>
+                </tr>
+            </tbody>
+          </table>  
+        </div>
+      </section><!-- id="book_edit_receipts" -->
+    </li>
+    <li>
+      <section id="book_edit_incomes">
+        <div class="book_edit_table">
+          <table>
+            <thead>
+              <tr>
+                <th colspan="4">Incomes</th>
+              </tr>
+              <tr>
+                <th>Day</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th>-</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @incomes.each do |income| %>
+              <tr class="book_edit_table_row" data-rowid="<%= income.id %>">
+                <% day = income.pay_date.day %>
+                <td><input class="column_pay_date" value="<%= day %>"> </td>
+                <td><input class="column_store" value="<%= Store.find(income.store_id).name %>"></td>
+                <td><input class="column_price" value="<%= income.price %>"></td>
+                <td>
+                  <button class="book_edit_send_btn" data-rowid="<%= income.id %>" data-rowtype="income">send</button>
+                  <button class="book_edit_delete_btn" data-rowid="<%= income.id %>" data-rowtype="income">delete</button>
+                </td>
+              </tr>
+              <% end %>
+              <tr class="book_edit_table_new_row">
+                <td><input class="column_pay_date" value=""></td>
+                <td><input class="column_store" value=""></td>
+                <td><input class="column_price" value=""></td>
+                <td>
+                  <button class="book_edit_send_btn" data-rowid="-1" data-rowtype="income">new</button>
+                </td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </section><!-- id="book_edit_incomes" -->
+    </li>
+  </ul>
+</section><!-- id="book_edit_main" -->

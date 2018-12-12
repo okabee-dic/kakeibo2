@@ -1,0 +1,65 @@
+<h2>店舗情報を入力する</h2>
+<section id="stores_new">
+  <h3>新しく店舗を追加する</h3>
+  <%= form_with(model: Store.new, url: book_stores_path(@book_id) ) do |f| %>
+    <div class="field">
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>    
+    <div class="field">
+      <%= f.label :genre_id %>
+      <%= f.collection_select :genre_id, Genre.all, :id, :name %>
+    </div>
+    <div class="field">
+      <%= f.label :numbering %>
+      <%= f.number_field :numbering %>
+    </div>
+    <div class="field">
+      <%= f.label :is_income %>
+      <%= f.select :is_income, [ ['', '2'], ['支出', false], ['収入', true] ] %>
+    </div>
+    <div class="action">
+      <%= f.submit '追加' %>
+    </div>
+  <% end %>
+</section>
+<section id="stores_list">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Genre</th>
+        <th>Type</th>
+        <th>Numbering</th>
+        <th>-</th>
+        <th>-</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @stores.each do |store| %>
+        <tr>
+          <%= form_with(model: store, url: book_store_path(@book_id, store.id), method: :patch) do |f| %>
+          <td><%= f.text_field :name %></td>
+          <td>
+            <%= f.collection_select :genre_id, Genre.all, :id, :name %>
+          </td>
+          <td>
+            <%= f.select :is_income, [ ['支出', false], ['収入', true] ] %>
+          </td>
+          <td>
+            <%= f.number_field :numbering, size: 4 %>
+          </td>
+          <td>
+            <%= f.submit '変更' %>
+          </td>
+          <td>
+            <%= link_to book_store_path(@book_id, store.id), method: :delete do %>
+              <button>削除</button>
+            <% end %>
+          </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

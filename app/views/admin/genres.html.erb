@@ -1,0 +1,108 @@
+<h2>ジャンル一覧</h2>
+<section id="genres_new">
+  <h3>新規登録</h3>
+  <%= form_with(model: Genre.new, url: admin_genre_create_path ) do |f| %>
+    <div class="field">
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>
+    <div style="display:flex">
+      <div class="field">
+        <%= f.label :income %>
+        <%= f.check_box :income %>
+      </div>
+      <div class="field">
+        <%= f.label :convinience %>
+        <%= f.check_box :convinience %>
+      </div>
+      <div class="field">
+        <%= f.label :supermarket %>
+        <%= f.check_box :supermarket %>
+      </div>
+      <div class="field">
+        <%= f.label :eatout %>
+        <%= f.check_box :eatout %>
+      </div>
+      <div class="field">
+        <%= f.label :runningcost %>
+        <%= f.check_box :runningcost %>
+      </div>
+      <div class="field">
+        <%= f.label :other %>
+        <%= f.check_box :other %>
+      </div>
+      <div class="field">
+        <%= f.label :unearned %>
+        <%= f.check_box :unearned %>
+      </div>
+      <div class="field">
+        <%= f.label :earning %>
+        <%= f.check_box :earning %>
+      </div>
+    </div>
+    <div class="actions">
+    <%= f.submit "追加" %>
+  </div>
+  <% end %>
+</section>
+<hr>
+<table>
+  <thead>
+    <tr>
+      <td>名前</td>
+      <td>収入</td>
+      <td>コンビニ</td>
+      <td>スーパー</td>
+      <td>外食</td>
+      <td>維持費</td>
+      <td>その他</td>
+      <td>不労所得</td>
+      <td>所得</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @genres.each do |genre| %>
+      <%= form_with(model: genre, url: admin_genre_path(genre.id), method: :patch) do |f| %>
+      <tr>
+        <td>
+          <%= f.text_field :name %>
+        </td>
+        <td>
+          <%= f.check_box :income %>
+        </td>
+        <td>
+          <%= f.check_box :convinience %>
+        </td>
+        <td>
+          <%= f.check_box :supermarket %>
+        </td>
+        <td>
+          <%= f.check_box :eatout %>
+        </td>
+        <td>
+          <%= f.check_box :runningcost %>
+        </td>
+        <td>
+          <%= f.check_box :other %>
+        </td>
+        <td>
+          <%= f.check_box :unearned %>
+        </td>
+        <td>
+          <%= f.check_box :earning %>
+        </td>
+        <td>
+          <%= f.submit '変更' %>
+        </td>
+        <td>
+          <%= link_to admin_genre_path(genre.id), method: :delete do %>
+            <button>削除</button>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

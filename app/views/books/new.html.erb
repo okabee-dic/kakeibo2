@@ -1,0 +1,9 @@
+<%= form_with(model: @book) do |f| %>
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+    
+  <div class="actions">
+    <%= f.submit "Sign up" %>
+  </div>
+<% end %>

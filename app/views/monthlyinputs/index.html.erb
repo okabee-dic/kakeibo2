@@ -1,0 +1,79 @@
+<h2>月ごとの自動入力</h2>
+<section id="monthlyinputs_new">
+  <h3>新規入力</h3>
+  <div id="monthlyinputs_new_form">
+    <%= form_with(model: @input, url: book_monthlyinputs_path) do |f| %>
+      <div class="field">
+        <%= f.label :pay_date %>
+        <%= f.number_field :pay_date %>
+      </div>
+      <div class="field">
+        <%= f.label :price %>
+        <%= f.number_field :price %>
+      </div>
+      <div class="field">
+        <%= f.label :store_id %>
+        <%= f.collection_select :store_id, @book.stores.all, :id, :name %>
+      </div>
+      <div class="field">
+        <%= f.label :start_date %>
+        <%= f.date_select :start_date, use_month_numbers: true, default: Date.now, date_separator: '/' %>
+      </div>
+      <div class="field">
+        <%= f.label :end_date %>
+        <%= f.date_select :end_date, use_month_numbers: true, default: Date.now, date_separator: '/' %>
+      </div>
+      <div class="submit">
+        <%= f.submit '送信' %>
+      </div>
+    <% end %>
+  </div>
+</section>
+<section id="monthlyinputs_list">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Pay Date</th>
+        <th>Price</th>
+        <th>Store</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>-</th>
+        <th>-</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @monthlyinputs.each do |m| %>
+        <tr>
+          <%= form_with(model: m, url: book_monthlyinput_path(@book_id, m.id), method: :patch) do |f| %>
+            <td>-</td>
+            <td>
+              <%= f.number_field :pay_date %>
+            </td>
+            <td>
+              <%= f.number_field :price %>
+            </td>
+            <td>
+              <%= f.collection_select :store_id, @book.stores.all, :id, :name %>
+            </td>
+            <td>
+              <%= f.date_select :start_date, use_month_numbers: true, date_separator: '/' %>
+            </td>
+            <td>
+              <%= f.date_select :end_date, use_month_numbers: true, date_separator: '/' %>
+            </td>
+            <td>
+              <%= f.submit '編集' %>
+            </td>
+            <td>
+              <%= link_to book_monthlyinput_path(@book_id, m.id), method: :delete do %>
+                <button>削除</button>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>
