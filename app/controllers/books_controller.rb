@@ -59,15 +59,18 @@ class BooksController < ApplicationController
     today = Date.today
     year  = today.year
     month = today.month
+    
     if params[:month]
-      month = params[:month]
+      month = params[:month].to_i
     end
+    
     if params[:year]
-      year = params[:year]
+      year = params[:year].to_i
     end
     
     showing_start = Date.new(year, month, 1)
     showing_end   = Date.new(year, month, -1)
+    @showing_date = showing_start
     
     incomes = @book.incomes.where("pay_date >= ? and pay_date <= ?", showing_start, showing_end)
     receipts = @book.receipts.where("pay_date >= ? and pay_date <= ?", showing_start, showing_end)

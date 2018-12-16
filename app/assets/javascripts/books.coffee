@@ -11,112 +11,139 @@ $(document).on 'turbolinks:load', ->
         return jqXHR.setRequestHeader('X-CSRF-Token', token)
         
   # create pathes
-  income_path = location.pathname.replace(/\/edit$/, "/incomes")
-  receipt_path = location.pathname.replace(/\/edit$/, "/receipts")
+  self_path = location.pathname.replace(/\/edit.*$/, "/edit")
+  income_path = self_path.replace(/\/edit$/, "/incomes")
+  receipt_path = self_path.replace(/\/edit$/, "/receipts")
   
   # start tablesorter
-  $('#book_edit_receipts table').tablesorter({
-    textSorter : {
-      1: (a, b, direction, column, table) ->
-        if (table.config.sortLocaleCompare) 
-          return a.localeCompare(b) 
-        return ((a < b) ? -1 : ((a > b) ? 1 : 0))
-    }
+  $('#book_edit_receipts table').tablesorter({  
+    theme : 'blue',
+    sortList: [[0,0],[1,0]]
   })
-        
-  $('#book_edit_main .book_edit_send_btn').each ->
-    $btn = $(this)
+  $('#book_edit_incomes table').tablesorter({ 
+    theme : 'blue',
+    sortList: [[0,0],[1,0]]
+  })
+  
+  # add separates to price
+  add_separates = (num) ->
+    return String(num).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
+  
+  # function update
+  update_receipts = ($parent) ->
+    pay_date = $parent.find('.column_pay_date > input').first().val()
+    store = $parent.find('.column_store > input').first().val()
+    price = $parent.find('.column_price > input').first().val()
+    type = $parent.data('rowtype')
+    row_id = $parent.data('rowid')
+    year = $('#book_edit_main').data('year')
+    month = $('#book_edit_main').data('month')
     
-    $btn.on 'click', ->
-      $this = $(this)
-      $parent = $this.closest('tr')
-      pay_date = $parent.find('.column_pay_date').first().val()
-      store = $parent.find('.column_store').first().val()
-      price = $parent.find('.column_price').first().val()
-      type = $this.data('rowtype')
-      row_id = $this.data('rowid')
-      year = $('#book_edit_main').data('year')
-      month = $('#book_edit_main').data('month')
+    # data validation
+    if pay_date == ""
+      return
+    if store == ""
+      return
+    if price == ""
+      return
       
-      # create path
-      # create or update, destroy is in another function
-      if row_id == -1
-        # create
-        method = 'POST'
-        if type == 'income'
-          path = income_path
-        else
-          path = receipt_path
+    # create path
+    # create or update, destroy is in another function
+    if row_id == -1
+      # create
+      method = 'POST'
+      if type == 'income'
+        path = income_path
       else
-        #update
-        method = 'PATCH'
-        if type == 'income'
-          path = "#{income_path}/#{row_id}"
-        else
-          path = "#{receipt_path}/#{row_id}"
+        path = receipt_path
+    else
+      #update
+      method = 'PATCH'
+      if type == 'income'
+        path = "#{income_path}/#{row_id}"
+      else
+        path = "#{receipt_path}/#{row_id}"
+    
+    $.ajax({
+      url: path,
+      type: method,
+      data: {
+        "pay_date": pay_date,
+        "store": store,
+        "price": price,
+        "type": type,
+        "row_id": row_id,
+        "year": year,
+        "month": month
+      }
+    })
+    .done (data) ->
+      new_row = JSON.parse(data)
+      if(new_row.type == 'income')
+        $parent = $('#book_edit_incomes > .book_edit_table tbody')
+      else
+        $parent = $('#book_edit_receipts > .book_edit_table tbody')
+     
+      day = parseInt( new_row.pay_date.replace(/.*-/, '') )
+      store = new_row.store_name
+      price = new_row.price
+      id = new_row.id
+      type = new_row.type
         
-      $.ajax({
-        url: path,
-        type: method,
-        data: {
-          "pay_date": pay_date,
-          "store": store,
-          "price": price,
-          "type": type,
-          "row_id": row_id,
-          "year": year,
-          "month": month
-        }
-      })
-      .done (data) ->
-        new_row = JSON.parse(data)
-        if(new_row.type == 'income')
-          $parent = $('#book_edit_incomes > .book_edit_table tbody')
-        else
-          $parent = $('#book_edit_receipts > .book_edit_table tbody')
-       
-        day = parseInt( new_row.pay_date.replace(/.*-/, '') )
-        store = new_row.store_name
-        price = new_row.price
-        id = new_row.id
-        type = new_row.type
+      # if create
+      if(new_row.row_id == -1)
+        # clear input form
+        $input_row = $parent.children('.book_edit_table_new_row')
+        $input_row.find('input').each ->
+          $(this).val('')
+        $input_row.find('.book_edit_cell_text').each ->
+          $(this).text('')
+        # create new item
+        row_text = "<tr class=\"book_edit_table_row\" data-rowid=\"#{id}\" data-rowtype=\"#{type}\">
+                <td class=\"book_edit_cell column_pay_date\">
+                  <span class=\"book_edit_cell_text\">#{day}</span>
+                  <input class=\"book_edit_cell_input\" value=\"#{day}\">
+                </td>
+                <td class=\"book_edit_cell column_store\">
+                  <span class=\"book_edit_cell_text\">#{store}</span>
+                  <input class=\"book_edit_cell_input\" value=\"#{store}\">
+                </td>
+                <td class=\"book_edit_cell column_price\">
+                  <span class=\"book_edit_cell_text\">#{add_separates(price)}</span>
+                  <input class=\"book_edit_cell_input\" value=\"#{price}\">
+                </td>
+                <td>
+                  <button class=\"book_edit_delete_btn\" data-rowid=\"#{id}\" data-rowtype=\"#{type}\">delete</button>
+                </td>
+              </tr>"
+        $parent.append(row_text)
+        # sort table
+        resort = ""
+        callback = ->
+          console.log('aaa')
+          # aaa
+        $parent.closest('table').trigger("update")
+        # new item from goes to the last
+        $parent.children('.book_edit_table_new_row').first().appendTo($parent)
+      else
+        # update item
+        row = $parent.children("[data-rowid=#{id}]").first()
+        row.find('.column_pay_date > input').first().val(day).siblings('.book_edit_cell_text').text(day)
+        row.find('.column_store > input').first().val(store).siblings('.book_edit_cell_text').text(store)
+        row.find('.column_price > input').first().val(price).siblings('.book_edit_cell_text').text( add_separates(price) )
         
-        # if create
-        if(new_row.row_id == -1)
-          # clear input form
-          $parent.children('.book_edit_table_new_row').find('input').each ->
-            $(this).val('')
-          # create new item
-          row_text = "<tr class=\"book_edit_table_row\" data-rowid=\"#{id}\">
-                  <td><input class=\"column_pay_date\" value=\"#{day}\"></td>
-                  <td><input class=\"column_store\" value=\"#{store}\"></td></td>
-                  <td><input class=\"column_price\" value=\"#{price}\"></td>
-                  <td>
-                    <button class=\"book_edit_send_btn\" data-rowid=\"#{id}\" data-rowtype=\"#{type}\">send</button>
-                    <button class=\"book_edit_delete_btn\" data-rowid=\"#{id}\" data-rowtype=\"#{type}\">delete</button>
-                  </td>
-                </tr>"
-          $parent.append(row_text)
-          # sort table
-          #$parent.closest('table')
-          # new item from goes to the last
-          $parent.children('.book_edit_table_new_row').first().appendTo($parent)
-        else
-          # update item
-          row = $parent.children("[data-rowid=#{id}]").first()
-          row.find('.column_pay_date').first().val(day)
-          row.find('.column_store').first().val(store)
-          row.find('.column_price').first().val(price)
               
-      .fail (data) ->
-        console.log('error:'+ data)
-        
+    .fail (data) ->
+      console.log('error:'+ data)
+      
+  # end update_receipts  
+  
+  # on click delete btn
   $('#book_edit_main .book_edit_delete_btn').each ->
     $btn = $(this)
     
     $btn.on 'click', ->
       $this = $(this)
-      #$parent = $this.closest('tr')
       type = $this.data('rowtype')
       row_id = $this.data('rowid')
       
@@ -148,3 +175,36 @@ $(document).on 'turbolinks:load', ->
         
       .fail (data) ->
         console.log('error:'+ data)
+  
+  # on focus edit cell
+  $('.book_edit_cell').each ->
+    $(this).on 'click', ->
+      $this = $(this)
+      # remove editting class which other cells have 
+      $('.editting').removeClass('editting')
+      # set editting class to myself
+      $this.addClass('editting')
+      # focus on my input
+      $this.children('input').first().focus()
+  
+  $('.book_edit_cell_input').each ->
+    $(this).on 'blur', ->
+      $this = $(this)
+      
+      # if price, add separates
+      value = ""
+      
+      if $this.parents('.column_price').length
+        value = add_separates( $this.val() )
+      else
+        value = $this.val()
+      
+      # Hide input on focus out
+      $this.closest('.editting').removeClass('editting')
+      .children('.book_edit_cell_text').first().text( value )
+      
+      # post input
+      $row = $this.closest('tr')
+      update_receipts($row)
+      
+      

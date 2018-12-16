@@ -23,6 +23,9 @@ Rails.application.routes.draw do
     resources :monthlyinputs, except: [:new, :edit]
     resources :incomes, only: [:create, :update, :destroy]
     resources :receipts, only: [:create, :update, :destroy]
+    collection do
+      get ':id/edit/:year/:month', to: 'books#edit', as: 'edit_book_in_month'
+    end
   end
   
   get 'index', to: 'pages#index'

@@ -2,6 +2,10 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.displaynone {
+  display: none;
+}
+
 .book_edit_table {
   table {
     border-collapse: collapse;
@@ -11,6 +15,28 @@
   }
 }
 
+.book_edit_cell {
+  &.editting {
+    .book_edit_cell_input {
+      display: inline;
+    }
+    .book_edit_cell_text {
+      display: none;
+    }
+  }
+  
+  .book_edit_cell_input {
+    display: none;
+  }
+  .book_edit_cell_text {
+    display: inline;
+  }
+}
+
 .column_pay_date{
   width: 50px;
+}
+
+.dates_container {
+  justify-content: space-between;
 }
