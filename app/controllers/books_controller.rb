@@ -19,14 +19,14 @@ class BooksController < ApplicationController
       if book.persisted?
         # create default stores
         # default receipt
-        genre_id = Genre.find_by( :is_income => false).id
+        genre_id = Genre.find_by( :income => false).id
         store = book.stores.create({
           name: '支出',
           genre_id: genre_id,
           is_income: false
         })
         # default income
-        genre_id = Genre.find_by( :is_income => true).id
+        genre_id = Genre.find_by( :income => true).id
         store = book.stores.create({
           name: '収入',
           genre_id: genre_id,
