@@ -95,19 +95,35 @@ class BooksController < ApplicationController
         end
       #end  
     end
+
+    # total result of incomes/receipts
+    @total_receipts = 0;
+    @total_incomes = 0;
     
     # add incomes
     incomes.each do |income|
       @incomes.push(income)
+      @total_incomes = @total_incomes + income.price
     end
     
     #add receipts
     receipts.each do |receipt|
       @receipts.push(receipt)
+      @total_receipts = @total_receipts + receipt.price
     end
     
     @incomes.sort_by! {|income| income.pay_date.day}
     @receipts.sort_by! {|receipt| receipt.pay_date.day}
+
+    @total_result = (@total_incomes - @total_receipts)
+    @total_receipts = @total_receipts.to_s(:delimited)
+    @total_incomes = @total_incomes.to_s(:delimited)
+
+    if @total_result < 0
+      @total_result = "▲#{ (-1*@total_result).to_s(:delimited) }"
+    else
+      @total_result = @total_result.to_s(:delimited)
+    end
     
     @stores = @book.stores.all
     @year = year

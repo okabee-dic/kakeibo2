@@ -2,41 +2,130 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.displaynone {
-  display: none;
-}
-
-.book_edit_table {
-  table {
-    border-collapse: collapse;
-  }
-  td, th {
-    border: 1px solid #7c7c7c;
+@media screen and (min-width: 1200px){
+  #book_edit .container {
+    width: 1200px;
+    margin: auto;
   }
 }
 
-.book_edit_cell {
-  &.editting {
+@media screen and (min-width: 1600px){
+  html {
+    font-size: 100% !important;
+  }
+}
+
+#book_edit {
+  .dates_container {
+    justify-content: space-around;
+    font-size: 1.4rem;
+    padding: 4px 10px;
+  }
+
+  #book_edit_main {
+    padding: 10px;
+
+    padding-bottom: 10rem;
+  }
+
+  /*------------------------
+  /* Tables 
+  /*------------------------*/
+
+  .book_edit_table {
+    table {
+      border-collapse: collapse;
+    }
+
+    td,
+    th {
+      border: 1px solid #7c7c7c;
+      padding: 0.2rem;
+    }
+
+    td, th, input {
+      font-size: 1.8rem;
+      line-height: 1.8rem;
+    }
+    button {
+      font-size: 1.4rem;
+    }
+    input, button, p {
+      padding: 0.2rem;
+    }
+    th {
+      font-weight: 600;
+    }
+  }
+
+  .book_edit_cell {
+    &.editting {
+      .book_edit_cell_input {
+        display: inline;
+      }
+
+      .book_edit_cell_text {
+        display: none;
+      }
+    }
+
     .book_edit_cell_input {
+      display: none;
+      width: 100%;
+    }
+
+    .book_edit_cell_text {
       display: inline;
     }
-    .book_edit_cell_text {
-      display: none;
+  }
+
+  .column_pay_date {
+    width: 50px;
+  }
+
+  .column_price {
+    text-align: right;
+    min-width: 100px;
+
+    input {
+      text-align: right;
     }
   }
-  
-  .book_edit_cell_input {
-    display: none;
-  }
-  .book_edit_cell_text {
-    display: inline;
-  }
-}
 
-.column_pay_date{
-  width: 50px;
-}
+  .column_store {
+    min-width: 100px;
+  }
 
-.dates_container {
-  justify-content: space-between;
+  /*--------------------------
+  /* Total Result Area 
+  /*--------------------------*/
+  #book_edit_total_view {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+  }
+
+  #book_edit_total_container {
+    background-color: #6c9ac5;
+    color: white;
+    padding: 10px 20px;
+    width: 100%;
+
+    .total_caption {
+      font-size: 1.0rem;
+      padding-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .total_result {
+      font-size: 3.2rem;
+      font-weight: 400;
+    }
+
+    #book_edit_total_receipts_and_incomes {
+      div {
+        padding-right: 2rem;
+      }
+    }
+  }
 }
