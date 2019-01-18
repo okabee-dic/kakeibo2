@@ -74,7 +74,7 @@ class BooksController < ApplicationController
     
     incomes = @book.incomes.where("pay_date >= ? and pay_date <= ?", showing_start, showing_end)
     receipts = @book.receipts.where("pay_date >= ? and pay_date <= ?", showing_start, showing_end)
-    monthlyinputs = @book.monthlyinputs.where("start_date >= ? and end_date <= ?", showing_start, showing_start)
+    monthlyinputs = @book.monthlyinputs.where("start_date <= ? and end_date >= ?", showing_start, showing_start)
     
     @incomes  = []
     @receipts = []
@@ -89,9 +89,11 @@ class BooksController < ApplicationController
         }
         
         if m.is_income == true
-          @incomes.push( @book.incomes.new(new_input) )
+          data = @book.incomes.new(new_input)
+          @incomes.push( data )
         else
-          @receipts.push( @book.receipts.new(new_input) )
+          data = @book.receipts.new(new_input)
+          @receipts.push( data )
         end
       #end  
     end

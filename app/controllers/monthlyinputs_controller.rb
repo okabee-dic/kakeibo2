@@ -79,6 +79,9 @@ class MonthlyinputsController < ApplicationController
     if monthlyinput[:start_date] > monthlyinput[:end_date]
       result[:invalid?] = true
     end
+
+    # setting is_income flag
+    result[:is_income] = Store.find(result[:store_id]).is_income
     
     result
   end
