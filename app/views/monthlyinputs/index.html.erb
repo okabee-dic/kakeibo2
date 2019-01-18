@@ -1,79 +1,120 @@
-<h2>月ごとの自動入力</h2>
-<section id="monthlyinputs_new">
-  <h3>新規入力</h3>
-  <div id="monthlyinputs_new_form">
-    <%= form_with(model: @input, url: book_monthlyinputs_path) do |f| %>
-      <div class="field">
-        <%= f.label :pay_date %>
-        <%= f.number_field :pay_date %>
-      </div>
-      <div class="field">
-        <%= f.label :price %>
-        <%= f.number_field :price %>
-      </div>
-      <div class="field">
-        <%= f.label :store_id %>
-        <%= f.collection_select :store_id, @book.stores.all, :id, :name %>
-      </div>
-      <div class="field">
-        <%= f.label :start_date %>
-        <%= f.date_select :start_date, use_month_numbers: true, default: Date.now, date_separator: '/' %>
-      </div>
-      <div class="field">
-        <%= f.label :end_date %>
-        <%= f.date_select :end_date, use_month_numbers: true, default: Date.now, date_separator: '/' %>
-      </div>
-      <div class="submit">
-        <%= f.submit '送信' %>
-      </div>
-    <% end %>
-  </div>
-</section>
-<section id="monthlyinputs_list">
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Pay Date</th>
-        <th>Price</th>
-        <th>Store</th>
-        <th>Start</th>
-        <th>End</th>
-        <th>-</th>
-        <th>-</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @monthlyinputs.each do |m| %>
-        <tr>
-          <%= form_with(model: m, url: book_monthlyinput_path(@book_id, m.id), method: :patch) do |f| %>
-            <td>-</td>
-            <td>
-              <%= f.number_field :pay_date %>
-            </td>
-            <td>
-              <%= f.number_field :price %>
-            </td>
-            <td>
-              <%= f.collection_select :store_id, @book.stores.all, :id, :name %>
-            </td>
-            <td>
-              <%= f.date_select :start_date, use_month_numbers: true, date_separator: '/' %>
-            </td>
-            <td>
-              <%= f.date_select :end_date, use_month_numbers: true, date_separator: '/' %>
-            </td>
-            <td>
-              <%= f.submit '編集' %>
-            </td>
-            <td>
-              <%= link_to book_monthlyinput_path(@book_id, m.id), method: :delete do %>
-                <button>削除</button>
+<div id="monthlyinputs_index">
+  <div class="flex align_items_stretch h100p">
+    <aside class="book_sidebar">
+      <%= render 'books/sidebar' %>
+    </aside>
+    <div class="w100p">
+      <h2 class="flex center">
+        <div class="page_title underlined pink">
+          <p>
+            月ごとの自動入力
+          </p>
+        </div>
+      </h2>
+      <section id="monthlyinputs_new">
+        <div class="flex w100p center">
+          <div class="monthlyinput_new_form separated_area inlineblock">
+            <h3 class="caption highlighted">新規入力</h3>
+            <div id="monthlyinputs_new_form" class="separated_area_content">
+              <%= form_with(model: @input, url: book_monthlyinputs_path) do |f| %>
+              <div class="field">
+                <p>
+                  <%= f.label :pay_date %>
+                </p>
+                <p>
+                  <%= f.number_field :pay_date %>
+                </p>
+              </div>
+              <div class="field">
+                <p>
+                  <%= f.label :price %>
+                </p>
+                <p>
+                  <%= f.number_field :price %>
+                </p>
+              </div>
+              <div class="field">
+                <p>
+                  <%= f.label :store_id %>
+                </p>
+                <p>
+                  <%= f.collection_select :store_id, @book.stores.all, :id, :name %>
+                </p>
+              </div>
+              <div class="field">
+                <p>
+                  <%= f.label :start_date %>
+                </p>
+                <p>
+                  <%= f.date_select :start_date, use_month_numbers: true, default: Time.now, date_separator: '/' %>
+                </p>
+              </div>
+              <div class="field">
+                <p>
+                  <%= f.label :end_date %>
+                </p>
+                <p>
+                  <%= f.date_select :end_date, use_month_numbers: true, default: Time.current.next_month, date_separator: '/' %>
+                </p>
+              </div>
+              <div class="submit">
+                <p class="right">
+                  <%= f.submit '送信' %>
+                </p>
+              </div>
               <% end %>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</section>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="monthlyinputs_list">
+        <div class="flex center mt20">
+          <table class="table blue">
+            <thead>
+              <tr>
+                <th>Pay Date</th>
+                <th>Price</th>
+                <th>Store</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>-</th>
+                <th>-</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @monthlyinputs.each do |m| %>
+              <tr>
+                <%= form_with(model: m, url: book_monthlyinput_path(@book_id, m.id), method: :patch) do |f| %>
+                <td>
+                  <%= f.number_field :pay_date %>
+                </td>
+                <td>
+                  <%= f.number_field :price %>
+                </td>
+                <td>
+                  <%= f.collection_select :store_id, @book.stores.all, :id, :name %>
+                </td>
+                <td>
+                  <%= f.date_select :start_date, use_month_numbers: true, date_separator: '/' %>
+                </td>
+                <td>
+                  <%= f.date_select :end_date, use_month_numbers: true, date_separator: '/' %>
+                </td>
+                <td>
+                  <%= f.submit '編集' %>
+                </td>
+                <td>
+                  <%= link_to book_monthlyinput_path(@book_id, m.id), method: :delete do %>
+                  <button>削除</button>
+                  <% end %>
+                </td>
+                <% end %>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

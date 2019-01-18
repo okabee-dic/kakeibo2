@@ -1,9 +1,29 @@
-<%= form_with(model: @book) do |f| %>
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-    
-  <div class="actions">
-    <%= f.submit "Sign up" %>
+<section id="books_new">
+  <h2 class="flex center">
+    <div class="page_title underlined pink">
+      <p>
+        新規家計簿
+      </p>
+    </div>
+  </h2>
+  <div class="flex center w100p">
+    <div class="separated_area blue books_new_form inline_block">
+      <h3 class="caption highlighted">新しく家計簿を追加する</h3>
+      <div class="separated_area_content">
+        <%= form_with(model: @book) do |f| %>
+        <div class="field">
+          <p>
+            <%= f.label :name %>
+          </p>
+          <p>
+            <%= f.text_field :name , size: 40 %>
+          <p>
+        </div>
+        <div class="actions right">
+          <%= f.submit "作成" %>
+        </div>
+        <% end %>
+      </div>
+    </div><!-- class="separated_area" -->
   </div>
-<% end %>
+</section> <!-- id="books_new" -->

@@ -46,7 +46,7 @@ class BooksController < ApplicationController
   end
   
   def index
-    @books = current_user.books.all
+    @books = current_user.books.all.order('id')
   end
   
   def destroy
@@ -131,7 +131,16 @@ class BooksController < ApplicationController
   end
   
   def update
-  
+    name = params[:name]
+    @book.update!({
+      name: name
+    })   
+
+    result = {
+      "name": name,
+      "status": "OK"
+    }
+    render :plain , result.to_json
   end
   
   protected 

@@ -1,97 +1,105 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Kakeibo</title>
-    <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+<head>
+  <title>Kakeibo</title>
+  <%= csrf_meta_tags %>
 
-  <body data-controller="<%= controller_name %>" data-action="<%= action_name %>">
-    <div class="mainController">
-      <header class="header">
-        <nav class="flex space_between">
-          <div class="leftSide">
-            <h1 class="title">Title</h1>
-          </div>
-          <div class="rightSide"> 
-            <ul class="nomarker flex btnlist">
-              <% if user_signed_in? %>
-              <li>
-                <div class="btn btn-adduser">
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body data-controller="<%= controller_name %>" data-action="<%= action_name %>">
+  <div class="mainController h100p">
+    <header class="header">
+      <nav class="flex space_between">
+        <div class="leftSide">
+          <h1 class="title">Title</h1>
+        </div>
+        <div class="rightSide">
+          <ul class="nomarker flex btnlist">
+            <% if user_signed_in? %>
+            <li>
+              <%= link_to new_book_path do %>
+              <div class="btn btn-adduser">
+                <div class="btn-icon">
+                  <%= fa_icon 'plus-square' %>
+                </div>
+                <div>
+                  <span class="btn-text">新規家計簿</span>
+                </div>
+              </div>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to books_path do %>
+              <div class="btn btn-adduser">
+                <div class="btn-icon">
+                  <%= fa_icon 'files-o' %>
+                </div>
+                <div>
+                  <span class="btn-text">家計簿選択</span>
+                </div>
+              </div>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to destroy_user_session_path, method: :delete do %>
+              <div class="btn btn-adduser">
+                <div class="btn-icon">
+                  <%= fa_icon 'sign-out' %>
+                </div>
+                <div>
+                  <span class="btn-text">ログアウト</span>
+                </div>
+              </div>
+              <% end %>
+            </li>
+            <% else %>
+            <li>
+              <a href="<%= new_user_session_path %>">
+                <div class="btn btn-login">
                   <div class="btn-icon">
-                    <%= fa_icon 'plus-square' %>
+                    <%= fa_icon 'sign-in' %>
                   </div>
                   <div>
-                    <span class="btn-text">新規家計簿</span>
+                    <span class="btn-text">ログイン</span>
                   </div>
                 </div>
-              </li>
-              <li>
-                <div class="btn btn-adduser">
+              </a>
+            </li>
+            <li>
+              <div class="btn btn-adduser">
+                <a href="<%= new_user_registration_path %>">
                   <div class="btn-icon">
-                    <%= fa_icon 'files-o' %>
+                    <%= fa_icon 'user-plus' %>
                   </div>
                   <div>
-                    <span class="btn-text">家計簿選択</span>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <%= link_to destroy_user_session_path, method: :delete do %>
-                <div class="btn btn-adduser">
-                  <div class="btn-icon">
-                    <%= fa_icon 'sign-out' %>
-                  </div>
-                  <div>
-                    <span class="btn-text">ログアウト</span>
-                  </div>
-                </div>
-                <% end %>
-              </li>
-              <% else %>
-              <li>
-                <a href="<%= new_user_session_path %>">
-                  <div class="btn btn-login">
-                    <div class="btn-icon">
-                      <%= fa_icon 'sign-in' %>
-                    </div>
-                    <div>
-                      <span class="btn-text">ログイン</span>
-                    </div>
+                    <span class="btn-text">新規登録</span>
                   </div>
                 </a>
-              </li>
-              <li>
-                <div class="btn btn-adduser">
-                  <a href="<%= new_user_registration_path %>">
-                    <div class="btn-icon">
-                      <%= fa_icon 'user-plus' %>
-                    </div>
-                    <div>
-                      <span class="btn-text">新規登録</span>
-                    </div>
-                  </a>
-                </div>
-                
-              </li>
-              <% end %>
-            </ul>
-            
-          </div>
-        </nav>
-      </header>
-      <section>
-        <% flash.each do |key, value| %>
-          <div class="flash <%= key %>"><%= value %></div>
-        <% end %>
-        <%= yield %>
-        
-      </section>  
-      <footer>
-        
-      </footer>
-    </div>
-  </body>
+              </div>
+
+            </li>
+            <% end %>
+          </ul>
+
+        </div>
+      </nav>
+    </header>
+    <section class="height_except_header">
+      <% flash.each do |key, value| %>
+      <div class="flash <%= key %>">
+        <%= value %>
+      </div>
+      <% end %>
+      <%= yield %>
+
+    </section>
+    <footer>
+
+    </footer>
+  </div> <!-- class="mainController" -->
+</body>
+
 </html>

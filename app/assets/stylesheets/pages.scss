@@ -2,10 +2,6 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-* {
-  box-sizing: border-box;
-}
-
 /* reset */
 html,
 body,
@@ -94,6 +90,7 @@ video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
+  box-sizing: border-box;
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -140,11 +137,16 @@ table {
 
 html {
   width: 100%;
+  height: 100%;
+  min-height: 100%;
   font-size: 62.5%;
 }
 
 body {
   width: 100%;
+  height: 100%;
+  min-height: 100%;
+  color: #232323;
 }
 
 
@@ -161,6 +163,13 @@ body {
 .space_around {
   justify-content: space-around;
 }
+.align_items_center {
+  align-items: center;
+}
+
+.align_items_stretch {
+  align-items: stretch;
+}
 
 .nomarker {
   text-decoration: none;
@@ -171,9 +180,70 @@ body {
   display: none;
 }
 
+.inlineblock {
+  display: inline-block;
+}
+
+.h100p {
+  height: 100%;
+}
+
+.w100p {
+  width: 100%;
+}
+
+.w90p {
+  width: 90%;
+}
+
+.p10 {
+  padding: 1rem;
+}
+
+.p20 {
+  padding: 2rem;
+}
+
+.mt10 {
+  margin-top: 1rem;
+}
+
+.mt20 {
+  margin-top: 2rem;
+}
+
+.height_except_header {
+  height: calc( 100% - 7.5rem );
+  min-height: calc( 100% - 7.5rem );
+}
+
+.minheight100p {
+  min-height: 100%;
+}
+
+.content_box {
+  box-sizing: content-box;
+}
+
+.relative {
+  position: relative;
+}
+
+.static {
+  position: static;
+}
+
+.absolute {
+  position: absolute;
+}
+
 .center {
   text-align: center;
   justify-content: center;
+}
+
+.right {
+  text-align: right;
 }
 
 /*---------------------------------
@@ -245,7 +315,7 @@ body {
   font-size: 2.0rem;
   font-weight: 500;
   display: inline-block;
-  margin: 10px 0;
+  margin: 2rem 0;
   border-radius: 2px;
   padding: 8px 16px;
 
@@ -253,6 +323,10 @@ body {
     padding: 0 16px;
   }
 }
+
+/*--------------------------------------
+/* underlined and hightlighted class
+/* -------------------------------------*/
 
 .underlined {
   &:after {
@@ -270,5 +344,156 @@ body {
   &.pink {
     color: white;
     background-color: #ef6c70;
+  }
+}
+
+/*-----------------------------
+/* separated area
+/*-----------------------------*/
+.separated_area {
+  background-color: #f2f8fd;
+  border: 1px solid #c4c5c6;
+
+  .highlighted {
+    background-color: #5a99d7;
+    color: white;
+    font-weight: 600;
+  }
+
+  .caption {
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    padding: 6px;
+  }
+
+  .separated_area_content {
+    padding: 0rem 2rem;
+    padding-bottom: 1rem;
+  }
+
+  input, button, select {
+    padding: 2px;
+  }
+
+  .field {
+    padding: 3px 0;
+    display: flex;
+    align-items: center;
+  }
+
+  label {
+    font-weight: 600;
+    min-width: 6rem;
+    display: block;
+  }
+}
+
+/*-----------------------------
+/* Table 
+/*-----------------------------*/
+.table {
+  /*---------------------
+  /* Color Setting of Tables
+  /* --------------------*/
+  &.pink {
+    border: 1px solid #c37d96;
+
+    td {
+      border-right: 1px dashed #c37d96;
+    }
+    th {
+      border-right: 1px dashed white;
+    }
+    thead {
+      tr {
+        background-color: #d287a2;
+        color: white;
+      }
+    }
+    tbody {
+      tr {
+        border-bottom: 1px solid #c37d96;
+        &:hover {
+          /*background-color: #f0cdda;*/
+          background-color: #f0e0e6;
+        }
+      }
+    }
+
+    input, select, option, button {
+      border: 1px solid #c37d96;
+    }
+  }
+  /* end pink */
+
+  &.blue {
+    border: 1px solid #c4c5c6;
+
+    td {
+      border-right: 1px dashed #c4c5c6;
+    }
+    th {
+      border-right: 1px dashed white;
+    }
+    thead {
+      tr {
+        background-color: #5a99d7;
+        color: white;
+      }
+    }
+    tbody {
+      tr {
+        border-bottom: 1px solid #c4c5c6;
+        &:hover {
+          /*background-color: #f0cdda;*/
+          background-color: #ebf3fb;
+        }
+      }
+    }
+
+    input, select, option, button {
+      border: 1px solid #c4c5c6;
+    }
+  }
+  /* end blue */
+
+  /* end color setting */
+
+  th,td {
+    padding: 4px;
+    vertical-align: middle;
+
+    &:last-child {
+      border-right: 0;
+    }
+  }
+  tbody {
+    tr {
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+
+    td {
+      font-size: 1.4rem;
+    }
+  }
+  th {
+    font-weight: 600;
+    text-align: center;
+    font-size: 1.4rem;
+  }
+  input, select, button {
+    padding: 2px;
+  }
+}
+
+/*-----------------------------
+/* media query 
+/*-----------------------------*/
+@media screen and (min-width: 1600px){
+  html {
+    font-size: 100% !important;
   }
 }

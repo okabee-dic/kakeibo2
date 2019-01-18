@@ -1,0 +1,11 @@
+<ul class="book_sidebar_items">
+  <%= link_to edit_book_path(@book_id) do %>
+  <li>家計簿を編集する</li>
+  <% end %>
+  <%= link_to book_stores_path(@book_id) do %>
+  <li>店舗情報を編集する</li>
+  <% end %>
+  <%= link_to book_monthlyinputs_path(@book_id) do %>
+  <li>月ごとの自動入力を編集する</li>
+  <% end %>
+</ul>

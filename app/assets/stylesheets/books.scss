@@ -2,20 +2,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-@media screen and (min-width: 1200px){
-  #book_edit .container {
-    width: 1200px;
-    margin: auto;
-  }
-}
-
-@media screen and (min-width: 1600px){
-  html {
-    font-size: 100% !important;
-  }
-}
-
 #book_edit {
+
   .dates_container {
     justify-content: space-around;
     font-size: 1.4rem;
@@ -24,8 +12,6 @@
 
   #book_edit_main {
     padding: 10px;
-
-    padding-bottom: 10rem;
   }
 
   /*------------------------
@@ -101,6 +87,7 @@
   /*--------------------------*/
   #book_edit_total_view {
     width: 100%;
+    height: 7rem;
     position: fixed;
     bottom: 0;
   }
@@ -127,5 +114,47 @@
         padding-right: 2rem;
       }
     }
+  }
+  .padding_bottom_for_total_view {
+    padding-bottom: 7rem;
+  }
+}
+/* end #book_edit */
+
+#books_index {
+  .books_index_edit_name_btn {
+    width: 6rem;
+  }
+  .books_index_edit_name_input {
+    width: 100%;
+  }
+  .books_index_names {
+    width: 20rem;
+  }
+
+  .books_index_name_area, .books_index_edit_name_input_area {
+    display: none;
+    &.active {
+      display: inline;
+    }
+  }
+
+  .books_index_names {
+    text-align: left;
+  }
+}
+
+.book_sidebar {
+  background-color: #f2f8fd;
+  border-right: 1px solid #c4c5c6;
+  width: 25rem;
+}
+
+.book_sidebar_items {
+  text-align: center;
+  font-size: 1.2rem;
+  li {
+    padding: 1.6rem;
+    border-bottom: 1px dashed #c4c5c6;
   }
 }

@@ -269,6 +269,41 @@ $ ->
 
     # initial setting events
     setting_events_of_cell()
+
+    # edit name of books btn on click
+    $('.books_index_edit_name_btn').on 'click', ->
+      $this = $(this)
+      $book_names = $this.parents('.books_index_name_row').first().
+      children('.books_index_names').first()
+
+      book_id = parseInt( $book_names.data('bookid') )
+      # toggle class 'active'
+      $book_name_input_area = $book_names.children('.books_index_edit_name_input_area').first()
+      .toggleClass('active')
+
+      $book_name_area = $book_names.children('.books_index_name_area').first().toggleClass('active')
+      
+      # changing name and sending name
+      if $this.hasClass('active')
+        # sending name
+        book_name = $book_name_input_area.find('input').first().val()
+        $.ajax({
+          url: "/books/#{book_id}",
+          type: 'patch',
+          data: {
+            name: book_name
+          }
+        })
+        .done (data) ->
+          result = JSON.parse(data)
+        
+        $book_name_area.find('.books_index_book_name').text(book_name)
+        $this.text('名前変更')
+      else
+        $this.text('送信')
+      
+      $this.toggleClass('active')
+    # end edit name of books btn on click
   
   # end controller books
       

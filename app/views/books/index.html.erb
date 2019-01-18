@@ -1,20 +1,44 @@
-<table>
-  <thead>
-    <tr>
-      <td>Name</td><td>-</td><td>-</td>
-    </tr>
-  </thead>
-  <tbody>
-<% @books.each do |book| %>
-    <tr>
-      <td><%= link_to book.name, edit_book_path(book.id) %></td>
-      <td>
-        -
-      </td>
-      <td>
-        <%= link_to '削除', book_path(book.id), method: :delete %>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
+<section id="books_index">
+  <h2 class="flex center">
+    <div class="page_title underlined pink">
+      <p>
+        家計簿を選ぶ
+      </p>
+    </div>
+  </h2>
+  <div class="flex center">
+    <table class="table blue">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>-</th>
+          <th>-</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @books.each do |book| %>
+        <tr class="books_index_name_row">
+          <td class="books_index_names" data-bookid="<%= book.id %>">
+            <span class="books_index_name_area active">
+              <%= link_to edit_book_path(book.id) do %>
+                <span class="books_index_book_name"><%= book.name %></span>
+              <% end %>
+            </span>
+            <span class="books_index_edit_name_input_area">
+              <input value="<%= book.name %>" class="books_index_edit_name_input">
+            </span>
+          </td>
+          <td>
+            <button class="books_index_edit_name_btn">名前変更</button>
+          </td>
+          <td>
+            <%= link_to book_path(book.id), method: :delete do %>
+              <button>削除<button>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>
