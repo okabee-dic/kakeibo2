@@ -78,6 +78,10 @@ class BooksController < ApplicationController
     
     @incomes  = []
     @receipts = []
+
+    # total result of incomes/receipts
+    @total_receipts = 0;
+    @total_incomes = 0;
     
     # add monthly inputs
     monthlyinputs.each do |m| 
@@ -91,16 +95,16 @@ class BooksController < ApplicationController
         if m.is_income == true
           data = @book.incomes.new(new_input)
           @incomes.push( data )
+          @total_incomes = @total_incomes + m.price
         else
           data = @book.receipts.new(new_input)
           @receipts.push( data )
+          @total_receipts = @total_receipts + m.price
         end
       #end  
     end
 
-    # total result of incomes/receipts
-    @total_receipts = 0;
-    @total_incomes = 0;
+    
     
     # add incomes
     incomes.each do |income|

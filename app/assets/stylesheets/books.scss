@@ -27,17 +27,21 @@
     th {
       border: 1px solid #7c7c7c;
       padding: 0.2rem;
+      vertical-align: middle;
     }
 
     td, th, input {
       font-size: 1.8rem;
-      line-height: 1.8rem;
     }
     button {
       font-size: 1.4rem;
+      height: 2.4rem;
     }
-    input, button, p {
+    input {
       padding: 0.2rem;
+    }
+    button, p {
+      padding: 0.5rem;
     }
     th {
       font-weight: 600;
@@ -46,8 +50,9 @@
 
   .book_edit_cell {
     &.editting {
+      padding: 0;
       .book_edit_cell_input {
-        display: inline;
+        display: inline-block;
       }
 
       .book_edit_cell_text {
@@ -55,18 +60,36 @@
       }
     }
 
-    .book_edit_cell_input {
-      display: none;
-      width: 100%;
-    }
+    
+  }
 
-    .book_edit_cell_text {
-      display: inline;
+  .book_edit_cell_input {
+    display: none;
+    width: 100%;
+  }
+
+  .book_edit_cell_text {
+    display: inline-block;
+  }
+
+  .book_edit_disabled_delete_btn_cell {
+    p {
+      font-size: 1.4rem;
+      padding: 0.5rem;
+      display: inline-block;
+      height: 2.4rem;
     }
   }
 
   .column_pay_date {
-    width: 50px;
+    text-align: right;
+    input {
+      text-align: right;
+    }
+  }
+
+  .column_store {
+    text-align: left;
   }
 
   .column_price {
@@ -97,6 +120,7 @@
     color: white;
     padding: 10px 20px;
     width: 100%;
+    opacity: 0.9;
 
     .total_caption {
       font-size: 1.0rem;
@@ -115,7 +139,12 @@
       }
     }
   }
-  .padding_bottom_for_total_view {
+  
+  .fullheight_with_bottomview {
+    min-height: 100%;
+  }
+
+  .padding_for_bottomview {
     padding-bottom: 7rem;
   }
 }

@@ -1,0 +1,47 @@
+<tr class="book_edit_table_row" data-rowid="<%= receipt.id %>" data-rowtype="<%= type %>">
+  <% day = receipt.pay_date.day %>
+  <% store_name = Store.find(receipt.store_id).name %>
+  <% unless receipt.id == nil %>
+  <td class="book_edit_cell column_pay_date">
+    <span class="book_edit_cell_text">
+      <%= day %></span>
+    <input class="book_edit_cell_input" value="<%= day %>">
+  </td>
+  <td class="book_edit_cell column_store">
+    <span class="book_edit_cell_text">
+      <%= store_name %></span>
+    <input class="book_edit_cell_input" value="<%= store_name %>">
+  </td>
+  <td class="book_edit_cell column_price">
+    <span class="book_edit_cell_text">
+      <%= receipt.price.to_s(:delimited) %></span>
+    <input class="book_edit_cell_input" value="<%= receipt.price %>">
+  </td>
+  <td>
+    <button class="book_edit_delete_btn" data-rowid="<%= receipt.id %>" data-rowtype="<%= type %>">
+      delete
+    </button>
+  </td>
+  <% else %>
+  <td class="column_pay_date">
+    <span class="book_edit_cell_text">
+      <%= day %>
+    </span>
+    <input type="hidden" class="book_edit_cell_input" value="<%= day %>">
+  </td>
+  <td class="column_store">
+    <span class="book_edit_cell_text">
+      <%= store_name %>
+    </span>
+    <input type="hidden" class="book_edit_cell_input" value="<%= store_name %>">
+  </td>
+  <td class="column_price">
+    <span class="book_edit_cell_text">
+      <%= receipt.price.to_s(:delimited) %></span>
+      <input type="hidden" class="book_edit_cell_input" value="<%= receipt.price %>">
+  </td>
+  <td class="book_edit_disabled_delete_btn_cell">
+    <p>自動登録</p>
+  </td>
+  <% end %>
+</tr>

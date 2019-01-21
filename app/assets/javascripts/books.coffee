@@ -223,11 +223,24 @@ $ ->
           delete_btn_on_click(this)
       # end delete btn on click
 
+      # set same width to cells and inputs
+      set_width_to_cells_and_inputs = ($cell) ->
+        $input = $cell.children('input').first()
+        $input.width( $cell.width() )
+    
+      # set width on load
+      $('.book_edit_cell').each ->
+        set_width_to_cells_and_inputs( $(this) )
+
+      # set width on resize
+      $('.book_edit_cell').on 'resize' , ->
+        set_width_to_cells_and_inputs( $(this) )
+
       # on focus edit cell
       $('.book_edit_cell').each ->
         $(this).on 'click', ->
           $this = $(this)
-          # remove editting class which other cells have 
+          # remove editting class which other cells have
           $('.editting').removeClass('editting')
           # set editting class to myself
           $this.addClass('editting')
@@ -253,18 +266,10 @@ $ ->
           $row = $this.closest('tr')
           update_receipts($row)
 
-      # set same width to cells and inputs
-      set_width_to_cells_and_inputs = ($cell) ->
-        $input = $cell.children('input').first()
-        $input.outerWidth( $cell.width() )
-    
-      # set width on load
-      $('.book_edit_cell').each ->
-        set_width_to_cells_and_inputs( $(this) )
-
-      # set width on resize
-      $('.book_edit_cell').on 'resize' , ->
-        set_width_to_cells_and_inputs( $(this) )
+          # resize input width to new cell width
+          $this.closest('tbody').find('.book_edit_cell').each ->
+            set_width_to_cells_and_inputs( $(this) )
+      
     # end setting_events_of_cell
 
     # initial setting events
