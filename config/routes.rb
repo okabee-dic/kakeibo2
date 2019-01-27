@@ -23,6 +23,11 @@ Rails.application.routes.draw do
     resources :monthlyinputs, except: [:new, :edit]
     resources :incomes, only: [:create, :update, :destroy]
     resources :receipts, only: [:create, :update, :destroy]
+    resource :graphs, only: [:index] do
+      get '/', to: 'graphs#index'
+      get 'linegraph', to: 'graphs#linegraph' 
+      get 'linegraph/:year/:month', to: 'graphs#linegraph' , as: 'linegraph_in_month'    
+    end
     collection do
       get ':id/edit/:year/:month', to: 'books#edit', as: 'edit_book_in_month'
     end

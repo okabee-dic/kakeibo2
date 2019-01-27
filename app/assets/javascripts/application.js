@@ -14,4 +14,5 @@
 //= require jquery/dist/jquery.js
 //= require jquery.jpostal
 //= require tablesorter/dist/js/jquery.tablesorter.combined.js
+//= require Chart.min
 //= require_tree .

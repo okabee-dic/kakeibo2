@@ -1,0 +1,45 @@
+<div class="flex align_items_stretch fullheight_with_bottomview h100p">
+  <aside class="book_sidebar">
+    <%= render 'books/sidebar' %>
+  </aside>
+  <div class="container w100p center content-box">
+    <h2 class="flex center">
+      <div class="page_title underlined pink">
+        <p>
+          <%= @year %>年
+          <%= @month %>月から10か月分のグラフ
+        </p>
+      </div>
+    </h2>
+    <section id="book_linegraph_date_select">
+      <div class="dates_container flex center">
+        <div>
+          <% last_date = @showing_date.last_month %>
+          <%= 
+            link_to "<<#{ last_date.strftime("%Y年%m月") }", 
+                    linegraph_in_month_book_graphs_path(@book_id, last_date.year, last_date.month) 
+          %>
+        </div>
+        <div>
+          <%= @showing_date.strftime("%Y年%m月")%>
+        </div>
+        <div>
+          <% next_date = @showing_date.next_month %>
+          <%=
+        link_to "#{ next_date.strftime("%Y年%m月") }>>", 
+                linegraph_in_month_book_graphs_path(@book_id, next_date.year, next_date.month) 
+      %>
+        </div>
+      </div>
+    </section> <!-- id="book_edit_date_select" -->
+    <section id="book_linegraph_main">
+      <div style="width: 80%; margin: auto;">
+        <canvas id="myChart" style="border: 1px dashed #aaa; height: 500px;">
+        </canvas>
+      </div>
+      <script>
+        draw_graph();
+      </script>
+    </section>
+  </div>
+</div>
