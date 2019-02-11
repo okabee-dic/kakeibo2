@@ -1,5 +1,5 @@
 <div id="stores_index" class="h100p">
-  <div class="flex align_items_stretch h100p">
+  <div class="flex align_items_stretch mh100p">
     <aside class="book_sidebar">
       <%= render 'books/sidebar' %>
     </aside>
@@ -64,10 +64,10 @@
           <table class="table blue">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Genre</th>
-                <th>Type</th>
-                <th>Numbering</th>
+                <th><%= t("activerecord.attributes.store.name") %></th>
+                <th><%= t("activerecord.attributes.store.genre_id") %></th>
+                <th><%= t("activerecord.attributes.store.is_income") %></th>
+                <th><%= t("activerecord.attributes.store.numbering") %></th>
                 <th>-</th>
                 <th>-</th>
               </tr>

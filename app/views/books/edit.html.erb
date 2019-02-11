@@ -1,9 +1,9 @@
-<div id="book_edit" class="h100p mh100p">
+<article id="book_edit" class="h100p mh100p">
   <div class="flex align_items_stretch fullheight_with_bottomview">
     <aside class="book_sidebar">
       <%= render 'books/sidebar' %>
     </aside>
-    <div class="container w100p center padding_for_bottomview content-box">
+    <div class="container w100p center padding_for_bottomview content-box mt10">
       <h2 class="flex center">
         <div class="page_title underlined pink">
           <p>
@@ -35,12 +35,12 @@
                 <table>
                   <thead>
                     <tr>
-                      <th colspan="4">Receipts</th>
+                      <th colspan="4"><%= t("receipt.receipt") %></th>
                     </tr>
                     <tr>
-                      <th>Day</th>
-                      <th>Store</th>
-                      <th>Price</th>
+                      <th><%= t("receipt.pay_date") %></th>
+                      <th><%= t("receipt.store") %></th>
+                      <th><%= t("receipt.price") %></th>
                       <th>-</th>
                     </tr>
                   </thead>
@@ -76,12 +76,12 @@
                 <table>
                   <thead>
                     <tr>
-                      <th colspan="4">Incomes</th>
+                      <th colspan="4"><%= t("receipt.income") %></th>
                     </tr>
                     <tr>
-                      <th>Day</th>
-                      <th>Type</th>
-                      <th>Price</th>
+                      <th><%= t("receipt.pay_date") %></th>
+                      <th><%= t("receipt.store") %></th>
+                      <th><%= t("receipt.price") %></th>
                       <th>-</th>
                     </tr>
                   </thead>
@@ -143,4 +143,4 @@
       </div>
     </div>
   </section><!-- id="book_edit_total_view" -->
-</div> <!-- id="book_edit" -->
+</article> <!-- id="book_edit" -->

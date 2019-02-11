@@ -10,11 +10,13 @@
 </head>
 
 <body data-controller="<%= controller_name %>" data-action="<%= action_name %>">
-  <div class="mainController mh100p h100p">
+  <div class="main_container mh100p h100p">
     <header class="header">
       <nav class="flex space_between header_nav">
         <div class="left_side">
+          <%= link_to :root, class: 'nounderline' do %>
           <h1 class="title">Kakeibo</h1>
+          <% end %>
         </div>
         <div class="right_side">
           <ul class="nomarker flex btnlist">
@@ -79,27 +81,37 @@
                   </div>
                 </a>
               </div>
-
             </li>
             <% end %>
           </ul>
-
         </div>
       </nav>
     </header>
-    <section class="height_except_header">
+    <section id="main_content" class="height_except_header">
+
+      <%= yield %>
+    </section>
+    <!--<% unless controller_name == 'books' && action_name == 'edit' %>
+    <footer class="footer">
+      <section id="copyright" class="copyright">
+        <p class="center">
+          (C)Copyright 2018- Kakeibo Project
+        </p>
+      </section>
+    </footer>
+    <% end %>-->
+  </div> <!-- class="main_container" -->
+  <% unless flash.empty? %>
+  <div class="flash flex center">
+    <div class="flash_container separated_area blue">
       <% flash.each do |key, value| %>
-      <div class="flash <%= key %>">
+      <div class="<%= key %>">
         <%= value %>
       </div>
       <% end %>
-      <%= yield %>
-
-    </section>
-    <footer>
-
-    </footer>
-  </div> <!-- class="mainController" -->
+    </div>
+  </div>
+  <% end %>
 </body>
 
 </html>

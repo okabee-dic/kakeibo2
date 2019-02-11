@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 window.draw_graph = ->
-  ctx = document.getElementById("myChart").getContext('2d')
+  ctx = document.getElementById("linegraph").getContext('2d')
   myChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -29,5 +29,9 @@ window.draw_graph = ->
         backgroundColor: "rgba(51,133,222,0.2)",
       }
       ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
     }
   })

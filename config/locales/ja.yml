@@ -1,0 +1,94 @@
+ja:
+  activerecord:
+    attributes:
+      user:
+        login: ユーザー名/メールアドレス
+        name: 名前
+        password: パスワード
+        password_confirmation: パスワード（確認）
+        email: メールアドレス
+        remember_me: パスワードを保存する
+        submit: ログイン
+        username: ユーザー名
+        sex: 性別
+        country: 国
+        postcode: 郵便番号
+        prefecture_id: 都道府県
+        address: 住所
+        building: 建物名
+        telephone: 電話番号
+        corporatename: 会社名
+      store:
+        name: 店舗名
+        genre_id: 種類
+        is_income: 属性
+        numbering: 順番
+      monthlyinput:
+        pay_date: 支払日
+        price: 価格
+        store_id: 店舗
+        start_date: 開始日
+        end_date: 終了日
+      book:
+        name: 家計簿名
+    errors:
+      messages:
+        invalid: "が不正な値です。"
+        confirmation: "が一致しません。"
+        accepted: "を承諾してください。"
+        empty: "が記入されていません。"
+        blank: "が記入されていません。"
+        inclusion: "は一覧にありません。"
+        exclusion: "は予約されています。"
+        too_long: "は%{count}文字以内で記入してください。"
+        too_short: "は%{count}文字以上で記入してください。"
+        wrong_length: "は%{count}文字で記入してください。"
+        taken: "はすでに使用されています。"
+        not_a_number: "は数値で入力してください。"
+        greater_than: "は%{count}より大きい値を指定してください。"
+        greater_than_or_equal_to: "は%{count}以上の値を指定してください。"
+        equal_to: "は%{count}を指定してください。"
+        less_than: "は%{count}より小さい値を指定してください。"
+        less_than_or_equal_to: "は%{count}以下の値を指定してください。"
+
+  login:
+    forgetpassword: パスワードをお忘れですか？
+    signup: 新規登録
+    receiveinstruction: 確認メールが届いていませんか？
+    login: ログイン
+    minimum_password_length: 文字が必要です
+
+  date:
+    formats:
+      default: "%Y/%m/%d"
+      short: "%m/%d"
+      long: "%Y年%m月%d日(%a)"
+
+    day_names: [日曜日, 月曜日, 火曜日, 水曜日, 木曜日, 金曜日, 土曜日]
+    abbr_day_names: [日, 月, 火, 水, 木, 金, 土]
+
+    month_names: [~, 1月, 2月, 3月, 4月, 5月, 6月, 7月, 8月, 9月, 10月, 11月, 12月]
+    abbr_month_names: [~, 1月, 2月, 3月, 4月, 5月, 6月, 7月, 8月, 9月, 10月, 11月, 12月]
+
+    order:
+      - :year
+      - :month
+      - :day
+
+  time:
+    formats:
+      default: "%Y/%m/%d %H:%M:%S"
+      short: "%y/%m/%d %H:%M"
+      long: "%Y年%m月%d日(%a) %H時%M分%S秒 %Z"
+    am: "午前"
+    pm: "午後"
+  
+  receipt: 
+    pay_date: 支払日
+    price: 価格
+    store: 店舗
+    receipt: 支出
+    income: 収入
+
+  book:
+    name: 家計簿名

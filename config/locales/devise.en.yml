@@ -2,6 +2,10 @@
 
 en:
   devise:
+    mail:
+      confirm_message: You can confirm your account email through the link below
+      welcome: welcome
+      confirm_link: Confirm my account
     confirmations:
       confirmed: "Your email address has been successfully confirmed."
       send_instructions: "You will receive an email with instructions for how to confirm your email address in a few minutes."

@@ -160,9 +160,11 @@ body {
 .space_between {
   justify-content: space-between;
 }
+
 .space_around {
   justify-content: space-around;
 }
+
 .align_items_center {
   align-items: center;
 }
@@ -208,8 +210,12 @@ body {
   padding: 2rem;
 }
 
+.pb10 {
+  padding-bottom: 1rem;
+}
+
 .pb100 {
-  padding-bottom: 100px;
+  padding-bottom: 10rem;
 }
 
 .mt10 {
@@ -220,11 +226,17 @@ body {
   margin-top: 2rem;
 }
 
+.mb10 {
+  margin-bottom: 1rem;
+}
 
+.mb20 {
+  margin-bottom: 2rem;
+}
 
 .height_except_header {
-  height: calc( 100% - 7.5rem );
-  min-height: calc( 100% - 7.5rem );
+  height: calc(100% - 7.5rem);
+  min-height: calc(100% - 7.5rem);
 }
 
 .minheight100p {
@@ -268,8 +280,16 @@ body {
   font-size: 1.4rem;
 }
 
+.line_height_18 {
+  line-height: 1.8rem;
+}
+
+.nounderline {
+  text-decoration: none;
+}
+
 /*---------------------------------
- * user class
+ * header
  *---------------------------------*/
 
 .header {
@@ -336,16 +356,34 @@ body {
   }
 }
 
-.page_title {
-  font-size: 2.0rem;
-  font-weight: 500;
-  display: inline-block;
-  margin: 2rem 0;
-  border-radius: 2px;
-  padding: 8px 16px;
 
-  p {
-    padding: 0 16px;
+/*--------------------------------------
+ * Footer
+ *--------------------------------------*/
+.footer {
+  width: 100%;
+  height: 2.0rem;
+
+  .footer_nav {
+    padding: 0.6rem;
+    background-color: #79689e;
+    color: white;
+    font-size: 1.2rem;
+
+    li {
+      padding: 0 0.4rem;
+
+      a {
+        color: white;
+      }
+    }
+  }
+
+  .copyright {
+    background-color: #2c2933;
+    color: white;
+    font-size: 1.2rem;
+    padding: 0.4rem;
   }
 }
 
@@ -355,7 +393,7 @@ body {
 
 .underlined {
   &:after {
-    border-top: 2px dashed #fff;
+    border-top: 0.2rem dashed #fff;
     margin-top: 2px;
     display: block;
     width: 100%;
@@ -366,9 +404,45 @@ body {
     color: white;
     background-color: #a8bb00;
   }
+
   &.pink {
     color: white;
     background-color: #ef6c70;
+  }
+
+  p {
+    padding: 0 1rem;
+  }
+}
+
+/*-----------------------------
+ * Flash message
+ *-----------------------------*/
+.flash {
+  position: fixed;
+  width: 100%;
+  top: 7.5rem;
+  animation: flashMessageAnimation 1s 2s forwards;
+  font-size: 1.4rem;
+  opacity: 0.9;
+  padding-top: 2rem;
+}
+
+.flash_container {
+  padding: 0.6rem 2rem;
+  display: inline-block;
+  border-radius: 0.6rem;
+  width: 50%;
+}
+
+@keyframes flashMessageAnimation {
+  0% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+    display: none;
   }
 }
 
@@ -379,10 +453,21 @@ body {
   background-color: #f2f8fd;
   border: 1px solid #c4c5c6;
 
+  &.pink {
+    background-color: #f7f1f3;
+    border-color: #c37d96;
+
+    .highlighted {
+      background-color: #d6467a; /*#d65080;*/
+    }
+  }
+
   .highlighted {
     background-color: #5a99d7;
     color: white;
     font-weight: 600;
+
+
   }
 
   .caption {
@@ -397,7 +482,9 @@ body {
     padding-bottom: 1rem;
   }
 
-  input, button, select {
+  input,
+  button,
+  select {
     padding: 2px;
   }
 
@@ -418,6 +505,7 @@ body {
 /* Table 
 /*-----------------------------*/
 .table {
+
   /*---------------------
   /* Color Setting of Tables
   /* --------------------*/
@@ -427,18 +515,22 @@ body {
     td {
       border-right: 1px dashed #c37d96;
     }
+
     th {
       border-right: 1px dashed white;
     }
+
     thead {
       tr {
         background-color: #d287a2;
         color: white;
       }
     }
+
     tbody {
       tr {
         border-bottom: 1px solid #c37d96;
+
         &:hover {
           /*background-color: #f0cdda;*/
           background-color: #f0e0e6;
@@ -446,10 +538,14 @@ body {
       }
     }
 
-    input, select, option, button {
+    input,
+    select,
+    option,
+    button {
       border: 1px solid #c37d96;
     }
   }
+
   /* end pink */
 
   &.blue {
@@ -458,18 +554,22 @@ body {
     td {
       border-right: 1px dashed #c4c5c6;
     }
+
     th {
       border-right: 1px dashed white;
     }
+
     thead {
       tr {
         background-color: #5a99d7;
         color: white;
       }
     }
+
     tbody {
       tr {
         border-bottom: 1px solid #c4c5c6;
+
         &:hover {
           /*background-color: #f0cdda;*/
           background-color: #ebf3fb;
@@ -477,15 +577,20 @@ body {
       }
     }
 
-    input, select, option, button {
+    input,
+    select,
+    option,
+    button {
       border: 1px solid #c4c5c6;
     }
   }
+
   /* end blue */
 
   /* end color setting */
 
-  th,td {
+  th,
+  td {
     padding: 4px;
     vertical-align: middle;
 
@@ -493,6 +598,7 @@ body {
       border-right: 0;
     }
   }
+
   tbody {
     tr {
       &:last-child {
@@ -504,20 +610,325 @@ body {
       font-size: 1.4rem;
     }
   }
+
   th {
     font-weight: 600;
     text-align: center;
     font-size: 1.4rem;
   }
-  input, select, button {
+
+  input,
+  select,
+  button {
     padding: 2px;
+  }
+}
+
+/*-----------------------------
+ * Common Classes
+ *-----------------------------*/
+.page_padding {
+  padding: 2rem;
+}
+
+.page_title {
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.2rem;
+}
+
+.page_paragraph {
+  padding-bottom: 1rem;
+  font-size: 1.6rem;
+  line-height: 2.0rem;
+}
+
+.indent {
+  padding-left: 1rem;
+}
+
+.heading {
+  padding: 0.4rem;
+  margin-bottom: 1rem;
+
+  &.heading_medium {
+    font-size: 1.8rem;
+  }
+
+  &.underline {
+    &:after {
+      content: "";
+      border-bottom: 1px solid #9680c7;
+      width: 100%;
+      height: 1px;
+      display: block;
+      position: relative;
+      top: 0.4rem;
+      left: -0.8rem;
+    }
+  }
+
+  &.highlight {
+    color: white;
+    background-color: #9680c7;
+    padding: 1.2rem 0.6rem;
+  }
+
+
+  &.leftline {
+    border-left: 0.4rem solid #9680c7;
+  }
+}
+
+/*-----------------------------
+ * landing page
+/*-----------------------------*/
+#page_index {
+  .main_visual {
+    height: 45rem;
+    background-color: #efedf4;
+    position: relative;
+    z-index: -4;
+
+    .main_visual_text_container {
+      width: 40%;
+      padding-top: 5rem;
+    }
+
+    .main_visual_btn {
+      width: 60%;
+      margin: auto;
+      background-color: #df9238;
+      color: white;
+      padding: 1.2rem;
+      font-size: 1.8rem;
+      text-align: center;
+      border-radius: 1rem;
+      position: relative;
+      z-index: 1000;
+    }
+  }
+
+  .main_visual_text {
+    text-align: center;
+    width: 100%;
+    font-weight: 700;
+    /*font-size: 4.8rem;*/
+    font-size: 4.2rem;
+    font-family: "游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", "メイリオ", sans-serif;
+    margin-bottom: 5rem;
+
+    p {
+      line-height: 6.0rem;
+      text-shadow: 6px 6px 4px rgba(0,0,0,0.1);
+      display: inline-block;
+      position: relative;
+      padding: 0 1rem;
+
+      &:before {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 4rem;
+        width: 100%;
+        height: 2rem;
+        background-color: #f2ee6b;
+        z-index: -1;
+      }
+    }
+  }
+
+  .page_index_usage_heading {
+    font-size: 1.8rem;
+    text-align: center;
+    font-weight: 600;
+    border-bottom: 0.4rem solid #9680c7;
+    padding: 0.8rem;
+  }
+
+  .index_usage_container {
+    display: flex;
+    justify-content: center;
+    & > div:first-child {
+      width: 50%;
+    }
+  }
+  
+  .index_usage_list {
+    padding: 2rem 1rem;
+
+    li {
+      padding: 1rem 1rem;
+    }
+
+    .index_usage_contents_container {
+      padding: 2rem 2rem;
+      width: 100%;
+    }
+
+    .index_usage_index {
+      font-size: 5rem;
+      border-right: 0.4rem solid #9680c7;
+      padding: 1rem 2rem;
+      align-items: center;
+      display: flex;
+    } 
+
+    .index_usage_title {
+      font-size: 2.0rem;
+      font-weight: 600;
+      padding: 0.4rem 0;
+      position: relative;
+      border-bottom: 0.2rem dashed #9680c7;
+      width: 100%;
+    }
+
+    .index_usage_text {
+      font-size: 1.6rem;
+      padding: 1.6rem 0;
+      line-height: 2rem;
+    }
+  }
+}
+
+/*-----------------------------
+ * login page
+ *-----------------------------*/
+.google_login_btn {
+  img {
+    width: 170px;
+    height: auto;
+  }
+
+  padding-bottom: 0.4rem;
+  margin-top: 0.4rem;
+}
+
+.facebook_login_btn {
+  img {
+    width: 170px;
+    height: auto;
+  }
+
+  margin-bottom: 1rem;
+}
+
+.form {
+  .field {
+    padding: 0.2rem 0.8rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    border-left: 0.4rem solid #9680c7;
+
+    label {
+      font-weight: 600;
+    }
+
+    input {
+      padding: 0.2rem;
+    }
+
+  }
+
+  .actions {
+    padding: 0.4rem;
+    margin-bottom: 0.8rem;
+  }
+}
+
+.login_form {
+  padding-top: 1rem;
+
+  .field {
+    label {
+      padding-right: 1rem;
+      width: 14rem;
+    }
+
+    input {
+      min-width: 240px;
+    }
+  }
+
+  .rememberbox {
+    margin-bottom: 0.4rem;
+  }
+}
+
+.registration_form {
+  padding: 1rem 0;
+
+  .field, .field_with_errors {
+    label {
+      width: 14rem;
+      line-height: 1.8rem;
+      display: block;
+      margin-right: 0.8rem;
+    }
+
+    input {
+      min-width: 240px;
+    }
+
+    .label_width {
+      padding-right: 1rem;
+      width: 14rem;
+      display: inline-block;
+      margin-right: 0.8rem;
+    }
+
+    &.county_select {
+      display: none;
+    }
+  }
+
+  .field_with_errors label {
+    background-color: #ebf3fb;
+  }
+
+  .username_checkresult {
+    margin-left: 14rem;
+    margin-bottom: 8px;
+  }
+
+  .popupmessage {
+    color: #dd443b;
+    position: relative;
+    display: inline-block;
+    padding: 8px;
+    min-width: 120px;
+    max-width: 100%;
+    font-size: 1.2rem;
+    border-radius: 6px;
+    background: #ede9f7;
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: -19px;
+      left: 20%;
+      margin-left: -10px;
+      border: 10px solid transparent;
+      border-bottom: 10px solid #ede9f7;
+    }
+
+    &.hidden {
+      display: none;
+    }
+
+    p {
+      margin: 0;
+      padding: 0;
+    }
   }
 }
 
 /*-----------------------------
 /* media query 
 /*-----------------------------*/
-@media screen and (min-width: 1600px){
+@media screen and (min-width: 1400px) {
   html {
     font-size: 100% !important;
   }

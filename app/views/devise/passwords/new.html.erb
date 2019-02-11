@@ -1,16 +1,29 @@
-<h2>Forgot your password?</h2>
+<article class="p20">
+<h2 class="page_title heading highlight">パスワードをお忘れですか？</h2>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= devise_error_messages! %>
+<div class="form registration_form">
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+    <% unless devise_error_messages! == '' %>
+    <div class="separated_area pink mb10">
+      <h3 class="caption highlighted">エラー</h3>
+      <div class="separated_area_content">
+        <%= devise_error_messages! %>
+      </div>
+    </div>
+    <% end %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <div class="field">
+      <%= f.label :email %><br />
+      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "パスワードをリセットする" %>
+    </div>
+    <% end %>
   </div>
-
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
-<% end %>
+</div>
 
 <%= render "devise/shared/links" %>
+
+</article>

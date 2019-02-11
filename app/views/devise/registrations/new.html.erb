@@ -1,80 +1,97 @@
-<h2>Sign up</h2>
+<h2 class="flex center mt20">
+  <div class="page_title underlined pink">
+    <p>
+      <%= t("login.signup") %>
+    </p>
+  </div>
+</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
-  
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :username %>
-    <%= f.text_field :username , id: :username %>
-    <p id="username_checkresult"></p>
-  </div>
+<div class="flex center form registration_form">
+  <div class="container_for_centering">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+    <% unless devise_error_messages! == '' %>
+    <div class="separated_area pink mb10">
+      <h3 class="caption highlighted">登録エラー</h3>
+      <div class="separated_area_content">
+        <%= devise_error_messages! %>
+      </div>
+    </div>
+    <% end %>
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
+    <div class="field">
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :sex %>
-    <%= f.select :sex, [ ["", 0], ["男性", 1], ["女性", 2], ["その他", 3] ] %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :country %><br />
-    <%= f.country_select :country, priority_countries: ["JP", "US"] %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :postcode %>
-    <%= f.text_field :postcode , id: :postcode  %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :prefecture_id %>
-    <%= f.collection_select :prefecture_name, JpPrefecture::Prefecture.all, :name, :name, id: :prefecture_name %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :address %>
-    <%= f.text_field :address , id: :address%>
-  </div>
-  
-  <div class="field">
-    <%= f.label :building %>
-    <%= f.text_field :building, id: :building %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :telephone %>
-    <%= f.text_field :telephone %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :corporatename %>
-    <%= f.text_field :corporatename %>
-  </div>
+    <div class="field">
+      <%= f.label :username %>
+      <%= f.text_field :username , id: :username %>
+    </div>
+    <div class="left">
+      <div id="username_checkresult" class="username_checkresult popupmessage hidden"></div>
+    </div>
 
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
+    <div class="field">
+      <%= f.label :email %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    </div>
 
-<%= render "devise/shared/links" %>
+    <div class="field">
+      <%= f.label :password %>
+      <%= f.password_field :password, autocomplete: "new-password" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password_confirmation %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :sex %>
+      <%= f.select :sex, [ ["", 0], ["男性", 1], ["女性", 2], ["その他", 3] ] %>
+    </div>
+
+    <div class="field county_select">
+      <%= f.label :country %><br />
+      <%= f.country_select :country, priority_countries: ["JP", "US"] %>
+    </div>
+
+    <div class="field">
+      <%= f.label :postcode %>
+      <%= f.text_field :postcode , id: :postcode  %>
+    </div>
+
+    <div class="field">
+      <%= f.label :prefecture_id %>
+      <%= f.collection_select :prefecture_name, JpPrefecture::Prefecture.all, :name, :name, id: :prefecture_name %>
+    </div>
+
+    <div class="field">
+      <%= f.label :address %>
+      <%= f.text_field :address , id: :address%>
+    </div>
+
+    <div class="field">
+      <%= f.label :building %>
+      <%= f.text_field :building, id: :building %>
+    </div>
+
+    <div class="field">
+      <%= f.label :telephone %>
+      <%= f.text_field :telephone %>
+    </div>
+
+    <div class="field">
+      <%= f.label :corporatename %>
+      <%= f.text_field :corporatename %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit t("login.signup") %>
+    </div>
+    <% end %>
+
+    <%= render "devise/shared/links" %>
+  </div>
+</div>

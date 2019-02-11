@@ -31,3 +31,10 @@
 
 en:
   hello: "Hello world"
+
+  login:
+    forgetpassword: Forgot your password?
+    signup: Sign up
+    receiveinstruction: Didn't receive confirmation instructions?
+    login: log in
+    minimum_password_length: characters minimum

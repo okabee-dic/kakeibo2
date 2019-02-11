@@ -1,9 +1,9 @@
-<div id="monthlyinputs_index">
-  <div class="flex align_items_stretch h100p">
+<article id="monthlyinputs_index" class="h100p">
+  <div class="flex align_items_stretch mh100p">
     <aside class="book_sidebar">
       <%= render 'books/sidebar' %>
     </aside>
-    <div class="w100p">
+    <div class="w100p mt10">
       <h2 class="flex center">
         <div class="page_title underlined pink">
           <p>
@@ -72,11 +72,11 @@
           <table class="table blue">
             <thead>
               <tr>
-                <th>Pay Date</th>
-                <th>Price</th>
-                <th>Store</th>
-                <th>Start</th>
-                <th>End</th>
+                <th><%= t("activerecord.attributes.monthlyinput.pay_date") %></th>
+                <th><%= t("activerecord.attributes.monthlyinput.price") %></th>
+                <th><%= t("activerecord.attributes.monthlyinput.store_id") %></th>
+                <th><%= t("activerecord.attributes.monthlyinput.start_date") %></th>
+                <th><%= t("activerecord.attributes.monthlyinput.end_date") %></th>
                 <th>-</th>
                 <th>-</th>
               </tr>
@@ -117,4 +117,4 @@
       </section>
     </div>
   </div>
-</div>
+</article>

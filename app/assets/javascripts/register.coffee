@@ -31,7 +31,7 @@ $ ->
         if result.message == 'available'
           show_text = '利用可能です。'
         
-        $('#username_checkresult').text(show_text)
+        $('#username_checkresult').text(show_text).removeClass('hidden')
       
       .fail (jqXHR, textStatus, errorThrown) ->
         $('#username_checkresult').text('通信エラーです。')
