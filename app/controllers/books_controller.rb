@@ -23,14 +23,16 @@ class BooksController < ApplicationController
         store = book.stores.create({
           name: '支出',
           genre_id: genre_id,
-          is_income: false
+          is_income: false,
+          locked: true
         })
         # default income
         genre_id = Genre.find_by( :income => true).id
         store = book.stores.create({
           name: '収入',
           genre_id: genre_id,
-          is_income: true
+          is_income: true,
+          locked: true
         })
         
         flash[:notice] = '家計簿を作成しました。'

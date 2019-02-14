@@ -1,4 +1,4 @@
-<div id="stores_index" class="h100p">
+<article id="stores_index" class="h100p">
   <div class="flex align_items_stretch mh100p">
     <aside class="book_sidebar">
       <%= render 'books/sidebar' %>
@@ -13,6 +13,7 @@
       </h2>
       <section id="stores_new">
         <div class="flex w100p center">
+
           <div class="separated_area inlineblock">
             <h3 class="caption highlighted">新しく店舗を追加する</h3>
             <%= form_with(model: Store.new, url: book_stores_path(@book_id) ) do |f| %>
@@ -64,10 +65,18 @@
           <table class="table blue">
             <thead>
               <tr>
-                <th><%= t("activerecord.attributes.store.name") %></th>
-                <th><%= t("activerecord.attributes.store.genre_id") %></th>
-                <th><%= t("activerecord.attributes.store.is_income") %></th>
-                <th><%= t("activerecord.attributes.store.numbering") %></th>
+                <th>
+                  <%= t("activerecord.attributes.store.name") %>
+                </th>
+                <th>
+                  <%= t("activerecord.attributes.store.genre_id") %>
+                </th>
+                <th>
+                  <%= t("activerecord.attributes.store.is_income") %>
+                </th>
+                <th>
+                  <%= t("activerecord.attributes.store.numbering") %>
+                </th>
                 <th>-</th>
                 <th>-</th>
               </tr>
@@ -75,9 +84,9 @@
             <tbody>
               <% @stores.each do |store| %>
               <tr>
-                <%= form_with(model: store, url: book_store_path(@book_id, store.id), method: :patch) do |f| %>
+                <%= form_with(model: store, url: book_store_path(@book_id, store.id), method: :patch, class: 'store_edit_form') do |f| %>
                 <td>
-                  <%= f.text_field :name %>
+                  <%= f.text_field :name, class: 'store_name' %>
                 </td>
                 <td>
                   <%= f.collection_select :genre_id, Genre.all, :id, :name %>
@@ -92,8 +101,12 @@
                   <%= f.submit '変更' %>
                 </td>
                 <td>
+                  <% if store.locked == false %>
                   <%= link_to book_store_path(@book_id, store.id), method: :delete do %>
                   <button>削除</button>
+                  <% end %>
+                  <% else %>
+                  -
                   <% end %>
                 </td>
                 <% end %>
@@ -105,4 +118,5 @@
       </section>
     </div>
   </div>
-</div> <!-- id="stores_index" -->
+  
+</article> <!-- id="stores_index" -->

@@ -438,11 +438,12 @@ body {
 @keyframes flashMessageAnimation {
   0% {
     opacity: 0.9;
+    visibility:visible;
   }
 
   100% {
     opacity: 0;
-    display: none;
+    visibility:hidden;
   }
 }
 
