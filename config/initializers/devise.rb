@@ -290,4 +290,5 @@ Devise.setup do |config|
   # end
   config.omniauth :google_oauth2, ENV['GOOGLE_APP_ID'], ENV['GOOGLE_APP_SECRET'], name: :google
   config.omniauth :facebook, ENV["FACEBOOK_ID_DEVELOPMENT"], ENV["FACEBOOK_SECRET_DEVELOPMENT"], scope: 'email', display: 'popup', info_fields: 'name, email'
+  config.secret_key = '939fc29a315e48b5d16b7ed06729c078dfeb1ea7bd32c9029f256f9b8a9f31fb02e69b6f0d6f992565f9757f9799349a0d7655658fb2e4d4e0b60147c3176810'
 end
