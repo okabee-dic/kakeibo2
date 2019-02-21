@@ -6,17 +6,19 @@
           <p>埋めるだけで</p>
           <p>お手軽家計簿</p>
         </h3>
-        <%= link_to new_user_registration_path, class: 'nounderline' do %>
-        <div class="main_visual_btn">
-          始めてみる
+        <div class="main_visual_btn_container">
+          <%= link_to new_user_registration_path, class: 'nounderline' do %>
+          <div class="main_visual_btn">
+            始めてみる
+          </div>
+          <% end %>
         </div>
-        <% end %>
       </div>
     </div>
   </section>
   <section id="page_index_usage">
     <div class="p10">
-      <h3 class="page_index_usage_heading">使い方のポイント</h3>
+      <h3 class="page_index_usage_heading">Kakeiboの特徴</h3>
     </div>
     <ul class="index_usage_list">
       <li>
@@ -24,7 +26,7 @@
           <div class="flex">
             <div class="index_usage_index">1</div>
             <div class="index_usage_contents_container">
-              <h4 class="index_usage_title">家計簿を埋める</h4>
+              <h4 class="index_usage_title">家計簿を埋めるだけ</h4>
               <p class="index_usage_text">
                 支払日、店舗名、金額の３つを入力して家計簿を埋めます。<br>
                 Excel感覚で素早く入力でき、収支は自動的に計算されます。<br>

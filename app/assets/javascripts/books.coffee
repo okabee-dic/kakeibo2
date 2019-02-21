@@ -10,43 +10,81 @@ $ ->
     receipt_path = self_path.replace(/\/edit$/, "/receipts")
   
     # start tablesorter
-    $('#book_edit_receipts table').tablesorter({  
-      theme : 'blue',
-      sortList: [[0,0],[1,0]]
+    $('#book_edit_receipts table').tablesorter({
+      theme: 'blue',
+      sortList: [[0, 0], [1, 0]]
     })
-    $('#book_edit_incomes table').tablesorter({ 
-      theme : 'blue',
-      sortList: [[0,0],[1,0]]
+    $('#book_edit_incomes table').tablesorter({
+      theme: 'blue',
+      sortList: [[0, 0], [1, 0]]
     })
   
     # add separates to price
+    # カンマ区切りを追加する関数
     add_separates = (num) ->
       return String(num).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
 
     # calculate the balance
+    # データが変更された際に収支を計算する関数
     calc_balance = ->
-      total_receipts = 0
-      total_incomes = 0
+      year = $('#book_edit_main').data('year')
+      month = $('#book_edit_main').data('month')
 
-      $('#book_edit_receipts .column_price input').each ->
-        price = parseInt( $(this).val() )
-        unless Number.isInteger(price)
-          price = 0
-        total_receipts += price
-      $('#book_edit_incomes .column_price input').each ->
-        price = parseInt( $(this).val() )
-        unless Number.isInteger(price)
-          price = 0
-        total_incomes += price
+      $.ajax({
+        url: location.pathname.replace(/\/edit.*$/, "/get_balance"),
+        type: 'POST',
+        data: {
+          "year": year,
+          "month": month,
+          "target": 'all'
+        }
+      })
+      .done (data) ->
+        # parse json and setting price from json
+        result = JSON.parse(data)
+        total_result = result.balance
+        total_incomes = result.incomes
+        total_receipts = result.receipts
 
-      total_result = total_incomes - total_receipts
+        showing_balance(total_receipts, total_incomes, total_result)
 
+      .fail (jqXHR, textStatus, errorThrown) ->
+        # in error, calc from local DOM elements
+        total_receipts = 0
+        total_incomes = 0
+
+        $('#book_edit_receipts .column_price input').each ->
+          price = parseInt( $(this).val() )
+          unless Number.isInteger(price)
+            price = 0
+          total_receipts += price
+        $('#book_edit_incomes .column_price input').each ->
+          price = parseInt( $(this).val() )
+          unless Number.isInteger(price)
+            price = 0
+          total_incomes += price
+
+        total_result = total_incomes - total_receipts
+        # end
+
+        window.book_edit_total_result = total_result
+        window.book_edit_total_incomes = total_incomes
+        window.book_edit_total_receipts = total_receipts
+
+        showing_balance(total_receipts, total_incomes, total_result)
+
+      # end fail
+    # end calc_balance
+
+    # the function showing the balance
+    # 収支を表示する関数
+    showing_balance = (total_receipts, total_incomes, total_result) ->
+      # add separates to prices and set prices to view
       if (total_result < 0)
         total_result = "▲#{ add_separates( -1 * total_result ) }"
       else
         total_result = add_separates(total_result)
         
-
       $total_view = $('#book_edit_total_view')
       $total_view.find('#book_edit_total_receipts .total_price').first()
       .text( add_separates(total_receipts) )
@@ -56,9 +94,10 @@ $ ->
 
       $total_view.find('#book_edit_total_result .total_price').first()
       .text( total_result )
-    # end calc_balance
+    # end showing_balance
 
-    # function update
+    # function of update receipts
+    # 変更されたデータを送信する関数
     update_receipts = ($parent) ->
       pay_date = $parent.find('.column_pay_date > input').first().val()
       store = $parent.find('.column_store > input').first().val()
@@ -156,20 +195,24 @@ $ ->
         else
           # update item
           row = $parent.children("[data-rowid=#{id}]").first()
-          row.find('.column_pay_date > input').first().val(day).siblings('.book_edit_cell_text').text(day)
-          row.find('.column_store > input').first().val(store).siblings('.book_edit_cell_text').text(store)
-          row.find('.column_price > input').first().val(price).siblings('.book_edit_cell_text').text( add_separates(price) )
+          row.find('.column_pay_date > input').first().val(day).siblings('.book_edit_cell_text')
+          .text(day)
+          row.find('.column_store > input').first().val(store).siblings('.book_edit_cell_text')
+          .text(store)
+          row.find('.column_price > input').first().val(price).siblings('.book_edit_cell_text')
+          .text( add_separates(price) )
         
         # calc balance on either events
         # calc after DOM edit
         window.setTimeout(calc_balance, 1000)
               
       .fail (data) ->
-        console.log('error:'+ data)
+        console.log('error:' + data)
       
     # end update_receipts
   
     # method of delete button on click
+    # 削除ボタンをクリックしたときに呼ばれる関数
     delete_btn_on_click = (btn) ->
       $this = $(btn)
       type = $this.data('rowtype')
@@ -191,6 +234,7 @@ $ ->
       .done (data) ->
         delete_row = JSON.parse(data)
         
+        # row_id from server is the same as sending row_id
         id = delete_row.row_id
         type = delete_row.type
         
@@ -200,9 +244,6 @@ $ ->
           $parent = $('#book_edit_receipts > .book_edit_table tbody')
           
         $parent.children("[data-rowid=\"#{id}\"]").remove()
-
-      
-      
 
       # reset events
       setting_events_of_cell()
@@ -215,6 +256,8 @@ $ ->
         console.log('error:' + data)
     # end delete_btn_on_click
 
+    # the function that is setting events of cell when DOM is created.
+    # DOM要素が追加された際にイベントを設定する関数
     setting_events_of_cell = ->
       # on click delete btn
       $('#book_edit_main .book_edit_delete_btn').each ->
@@ -224,6 +267,7 @@ $ ->
       # end delete btn on click
 
       # set same width to cells and inputs
+      # セルとinputのサイズを合わせる
       set_width_to_cells_and_inputs = ($cell) ->
         $input = $cell.children('input').first()
         $input.width( $cell.width() )
@@ -237,6 +281,8 @@ $ ->
         set_width_to_cells_and_inputs( $(this) )
 
       # on focus edit cell
+      # toggle to show the input and hide the text
+      # セルをクリックするとinputに切り替える
       $('.book_edit_cell').each ->
         $(this).on 'click', ->
           $this = $(this)
@@ -248,11 +294,12 @@ $ ->
           $this.children('input').first().focus()
   
       $('.book_edit_cell_input').each ->
+        # on focus out, send data and toggle showing of input and text
+        # inputからフォーカスが外れると編集したデータを送信
+        # 送信後、inputを非表示にしてテキストを表示する
         $(this).on 'blur', ->
           $this = $(this)
           # if price, add separates
-          value = ""
-      
           if $this.parents('.column_price').length
             value = add_separates( $this.val() )
           else
@@ -269,13 +316,17 @@ $ ->
           # resize input width to new cell width
           $this.closest('tbody').find('.book_edit_cell').each ->
             set_width_to_cells_and_inputs( $(this) )
+
+      
       
     # end setting_events_of_cell
 
     # initial setting events
     setting_events_of_cell()
 
+    # this function is for books/index
     # edit name of books btn on click
+    # books/indexで名前を変更した際に送信する
     $('.books_index_edit_name_btn').on 'click', ->
       $this = $(this)
       $book_names = $this.parents('.books_index_name_row').first().
@@ -309,6 +360,6 @@ $ ->
       
       $this.toggleClass('active')
     # end edit name of books btn on click
-  
+
   # end controller books
       

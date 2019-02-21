@@ -7,10 +7,11 @@ $ ->
     $this = $(this)
     window.store_index_myname = $this.closest('tr').find('.store_name').val()
     window.store_index_samename_count = 0
-    $this.closest('table').find('tr').each ->
+    $this.closest('tbody').find('tr').each ->
       if $(this).find('.store_name').val() == window.store_index_myname
         window.store_index_samename_count++
+    
     if window.store_index_samename_count > 1
       alert('店舗名は重複してしてできません。')
-      return false;
+      return false
         

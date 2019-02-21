@@ -690,7 +690,7 @@ body {
     height: 45rem;
     background-color: #efedf4;
     position: relative;
-    z-index: -4;
+    z-index: 1;
 
     .main_visual_text_container {
       width: 40%;
@@ -708,6 +708,11 @@ body {
       border-radius: 1rem;
       position: relative;
       z-index: 1000;
+    }
+
+    .main_visual_btn_container {
+      position: relative;
+      z-index: 100;
     }
   }
 

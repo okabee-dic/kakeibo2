@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     end
     collection do
       get ':id/edit/:year/:month', to: 'books#edit', as: 'edit_book_in_month'
+      post ':id/get_balance', to: 'books#get_balance', as: 'book_get_balance'
     end
   end
   
@@ -41,6 +42,5 @@ Rails.application.routes.draw do
   post 'admin/genre', to: 'admin#genre_add', as: 'admin_genre_create'
   patch 'admin/genre/:id', to: 'admin#genre_update', as: 'admin_genre'
   delete 'admin/genre/:id', to: 'admin#genre_destroy'
-  
   
 end
