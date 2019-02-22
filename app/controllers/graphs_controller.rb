@@ -30,7 +30,7 @@ class GraphsController < ApplicationController
     
     # get 10 months data
     for i in 0..10
-      i_date = showing_date.prev_month(i+1)
+      i_date = showing_date.prev_month(i)
       year = i_date.year
       month = i_date.month
       years.push(year)
