@@ -36,7 +36,7 @@ class BooksController < ApplicationController
         })
         
         flash[:notice] = '家計簿を作成しました。'
-        redirect_to edit_book_path(book.id) and return
+        redirect_to edit_book_path(book.id)
       else
         @book = book
         flash[:alert] = '家計簿の作成に失敗しました。'

@@ -10,7 +10,7 @@
     <div class="flex center">
       <div class="separated_area inlineblock">
         <h3 class="caption highlighted">新しくジャンルを追加する</h3>
-        <%= form_with(model: Genre.new, class: 'p10', url: admin_genre_create_path ) do |f| %>
+        <%= form_with(model: Genre.new, local: true, class: 'p10', url: admin_genre_create_path ) do |f| %>
         <div class="field">
           <%= f.label :name %>
           <%= f.text_field :name %>

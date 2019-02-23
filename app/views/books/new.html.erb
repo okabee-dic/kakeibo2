@@ -10,7 +10,7 @@
     <div class="separated_area blue books_new_form inline_block">
       <h3 class="caption highlighted">新しく家計簿を追加する</h3>
       <div class="separated_area_content">
-        <%= form_with(model: @book) do |f| %>
+        <%= form_with(model: @book, local: true) do |f| %>
         <div class="field">
           <p>
             <%= f.label :name %>

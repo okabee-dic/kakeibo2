@@ -84,7 +84,7 @@
             <tbody>
               <% @stores.each do |store| %>
               <tr>
-                <%= form_with(model: store, url: book_store_path(@book_id, store.id), method: :patch, class: 'store_edit_form') do |f| %>
+                <%= form_with(model: store, local: true, url: book_store_path(@book_id, store.id), method: :patch, class: 'store_edit_form') do |f| %>
                 <td>
                   <%= f.text_field :name, class: 'store_name' %>
                 </td>
