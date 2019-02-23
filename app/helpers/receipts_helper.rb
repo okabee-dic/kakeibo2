@@ -26,18 +26,30 @@ module ReceiptsHelper
     result[:type] = input[:type]
     result[:row_id] = input[:row_id]
     result[:id] = data[:id]
+
+    result[:html] = render_to_string :partial => "books/receipt_row", :locals => 
+      { receipt: data, type: result[:type] }
+
     result
   end
   
   def get_params_to_hash
     input = {}
-    input[:pay_date] = params[:pay_date].to_i
+    input[:pay_date] = params[:pay_date].to_i.abs
     input[:store_name] = params[:store]
-    input[:price] = params[:price].to_i
+    input[:price] = params[:price].to_i.abs
     input[:type] = params[:type]
-    input[:year] = params[:year].to_i
-    input[:month] = params[:month].to_i
+    input[:year] = params[:year].to_i.abs
+    input[:month] = params[:month].to_i.abs
     input[:row_id] = params[:row_id].to_i
+
+    # validate date
+    unless Date.valid_date?(input[:year], input[:month], input[:pay_date])
+      input[:pay_date] = 1 if input[:pay_date] < 0
+      # if over the last day of the month, then day is the last day.
+      input[:pay_date] = -1 if input[:pay_date] > 1
+    end
+
     input
   end
 end

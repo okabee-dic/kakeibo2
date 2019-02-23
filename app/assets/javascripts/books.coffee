@@ -131,6 +131,7 @@ $ ->
           path = "#{income_path}/#{row_id}"
         else
           path = "#{receipt_path}/#{row_id}"
+      # end setting path
     
       $.ajax({
         url: path,
@@ -167,31 +168,17 @@ $ ->
           $input_row.find('.book_edit_cell_text').each ->
             $(this).text('')
           # create new item
-          row_text = "<tr class=\"book_edit_table_row\" data-rowid=\"#{id}\" data-rowtype=\"#{type}\">
-                <td class=\"book_edit_cell column_pay_date\">
-                  <span class=\"book_edit_cell_text\">#{day}</span>
-                  <input class=\"book_edit_cell_input\" value=\"#{day}\">
-                </td>
-                <td class=\"book_edit_cell column_store\">
-                  <span class=\"book_edit_cell_text\">#{store}</span>
-                  <input class=\"book_edit_cell_input\" value=\"#{store}\">
-                </td>
-                <td class=\"book_edit_cell column_price\">
-                  <span class=\"book_edit_cell_text\">#{add_separates(price)}</span>
-                  <input class=\"book_edit_cell_input\" value=\"#{price}\">
-                </td>
-                <td>
-                  <button class=\"book_edit_delete_btn\" data-rowid=\"#{id}\" data-rowtype=\"#{type}\">delete</button>
-                </td>
-              </tr>"
-          $parent.append(row_text)
+          row_text = new_row.html
+          #$tr = $parent.append(row_text)
+          $tr = $(row_text)
+          $tr.appendTo($parent)
           
           # sort table
           $parent.closest('table').trigger("update")
           # new item from goes to the last
           $parent.children('.book_edit_table_new_row').first().appendTo($parent)
           # reset events
-          setting_events_of_cell()
+          setting_events_of_cell($tr)
         else
           # update item
           row = $parent.children("[data-rowid=#{id}]").first()
@@ -246,7 +233,7 @@ $ ->
         $parent.children("[data-rowid=\"#{id}\"]").remove()
 
       # reset events
-      setting_events_of_cell()
+      #setting_events_of_cell()
 
       # calc balance
       # calc after DOM remove
@@ -258,9 +245,9 @@ $ ->
 
     # the function that is setting events of cell when DOM is created.
     # DOM要素が追加された際にイベントを設定する関数
-    setting_events_of_cell = ->
+    setting_events_of_cell = ($row) ->
       # on click delete btn
-      $('#book_edit_main .book_edit_delete_btn').each ->
+      $row.find('.book_edit_delete_btn').each ->
         $btn = $(this)
         $btn.on 'click', ->
           delete_btn_on_click(this)
@@ -273,17 +260,13 @@ $ ->
         $input.width( $cell.width() )
     
       # set width on load
-      $('.book_edit_cell').each ->
-        set_width_to_cells_and_inputs( $(this) )
-
-      # set width on resize
-      $('.book_edit_cell').on 'resize' , ->
+      $row.find('.book_edit_cell').each ->
         set_width_to_cells_and_inputs( $(this) )
 
       # on focus edit cell
       # toggle to show the input and hide the text
       # セルをクリックするとinputに切り替える
-      $('.book_edit_cell').each ->
+      $row.find('.book_edit_cell').each ->
         $(this).on 'click', ->
           $this = $(this)
           # remove editting class which other cells have
@@ -293,7 +276,7 @@ $ ->
           # focus on my input
           $this.children('input').first().focus()
   
-      $('.book_edit_cell_input').each ->
+      $row.find('.book_edit_cell_input').each ->
         # on focus out, send data and toggle showing of input and text
         # inputからフォーカスが外れると編集したデータを送信
         # 送信後、inputを非表示にしてテキストを表示する
@@ -316,13 +299,19 @@ $ ->
           # resize input width to new cell width
           $this.closest('tbody').find('.book_edit_cell').each ->
             set_width_to_cells_and_inputs( $(this) )
-
-      
-      
+          # end
+        # end blur
+      # end edit_input each
     # end setting_events_of_cell
 
     # initial setting events
-    setting_events_of_cell()
+    $('.book_edit_table_row').each ->
+      setting_events_of_cell( $(this) )
+    # end
+
+    $('.book_edit_table_new_row').each ->
+      setting_events_of_cell( $(this) )
+    # end
 
     # this function is for books/index
     # edit name of books btn on click
