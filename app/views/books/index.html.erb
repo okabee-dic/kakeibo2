@@ -29,11 +29,11 @@
             </span>
           </td>
           <td>
-            <button class="books_index_edit_name_btn">名前変更</button>
+            <p class="commonbtn books_index_edit_name_btn">名前変更</p>
           </td>
           <td>
-            <%= link_to book_path(book.id), method: :delete do %>
-              <button>削除<button>
+            <%= link_to book_path(book.id), method: :delete, class: 'nounderline' do %>
+              <p class="commonbtn books_index_edit_name_btn">削除</p>
             <% end %>
           </td>
         </tr>

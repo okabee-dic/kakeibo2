@@ -16,7 +16,7 @@
           <div class="monthlyinput_new_form separated_area inlineblock">
             <h3 class="caption highlighted">新規入力</h3>
             <div id="monthlyinputs_new_form" class="separated_area_content">
-              <%= form_with(model: @input, url: book_monthlyinputs_path) do |f| %>
+              <%= form_with(model: @input, local: true, url: book_monthlyinputs_path) do |f| %>
               <div class="field">
                 <p>
                   <%= f.label :pay_date %>

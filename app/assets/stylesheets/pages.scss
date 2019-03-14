@@ -289,6 +289,30 @@ body {
 }
 
 /*---------------------------------
+ * common btn
+ *---------------------------------*/
+ .commonbtn {
+  position: relative;
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  text-decoration: none;
+  color: white;
+  background: #5a99d7;
+  border: solid 1px #0f9ada;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.2);
+
+  &:active {
+    border: solid 1px #03A9F4;
+    box-shadow: none;
+    text-shadow: none;
+  }
+}
+
+
+
+/*---------------------------------
  * header
  *---------------------------------*/
 
@@ -499,6 +523,12 @@ body {
     font-weight: 600;
     min-width: 6rem;
     display: block;
+  }
+
+  p {
+    font-size: 1.4rem;
+    padding-bottom: 0.6rem;
+    line-height: 1.6rem;
   }
 }
 

@@ -155,7 +155,8 @@
 
 #books_index {
   .books_index_edit_name_btn {
-    width: 6rem;
+    padding: 0.6rem;
+    cursor: pointer;
   }
   .books_index_edit_name_input {
     width: 100%;
@@ -188,5 +189,18 @@
   li {
     padding: 1.6rem;
     border-bottom: 1px dashed #c4c5c6;
+  }
+}
+
+.csv_upload_form {
+  label {
+    width: 140px;
+    text-align: left;
+  }
+  select[id=_date_1i] {
+    margin-right: 0.4rem;
+  }
+  select[id=_date_2i] {
+    margin-left: 0.4rem;;
   }
 }

@@ -1,0 +1,51 @@
+<article id="stores_index" class="h100p">
+  <div class="flex align_items_stretch mh100p">
+    <aside class="book_sidebar">
+      <%= render 'books/sidebar' %>
+    </aside>
+    <div class="w100p p10">
+      <h2 class="flex center">
+        <div class="page_title underlined pink">
+          <p>
+            CSVから追加する
+          </p>
+        </div>
+      </h2>
+      <div class="flex w100p center">
+        <div class="monthlyinput_new_form separated_area inlineblock">
+          <h3 class="caption highlighted">CSVファイルの形式について</h3>
+          <div class="separated_area_content">
+            <p>
+              支払日,店名,金額&nbsp;の形式で入力してください。<br>
+              金額がマイナスの数値の場合、支出となります。
+            </p>
+            <p class="left mt10">例:)</p>
+            <p>
+              21,支出,-1234<br>
+              25,収入,5678
+            <p>
+
+          </div>
+        </div>
+      </div>
+      <div class="flex w100p center mt10">
+        <div class="flex center form csv_upload_form">
+          <%= form_with local: true, url:  book_csv_uploader_index_path(@book_id), 
+            method: :post  do |f| %>
+          <div class="field">
+            <label>どの月に追加しますか？</label>
+            <%= f.date_select :date, use_month_numbers: true, default: Time.now, 
+        date_separator: '/', discard_day: true %>
+          </div>
+          <div class="field">
+            <label>アップロードするファイル</label>
+            <%= f.file_field :upload_file %>
+          </div>
+          <div class="submit">
+            <%= f.submit "送信" %>
+          </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+</article>

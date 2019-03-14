@@ -42,6 +42,11 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
+  gem 'rspec-rails'
+  gem 'spring-commands-rspec'
+  gem 'faker'
+  gem 'database_cleaner'
+  gem 'launchy'
   
   gem 'pry-rails'
   gem 'pry-byebug'
@@ -72,7 +77,6 @@ gem 'omniauth-facebook'
 gem 'font-awesome-rails'
 gem 'country_select'
 gem 'jp_prefecture'
-#gem 'jquery-rails'
 
 gem 'chart-js-rails', '~> 0.1.4'
 gem 'gon', '~> 6.2.0'

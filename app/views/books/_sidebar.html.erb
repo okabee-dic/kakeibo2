@@ -8,6 +8,9 @@
   <%= link_to book_monthlyinputs_path(@book_id) do %>
   <li>月ごとの自動入力を編集する</li>
   <% end %>
+  <%= link_to new_book_csv_uploader_path(@book_id) do %>
+  <li>CSVファイルから追加する</li>
+  <% end %>
   <%= link_to linegraph_book_graphs_path(@book_id) do %>
   <li>グラフを見る</li>
   <% end %>

@@ -3,6 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
+　# only books_controller
   if $('body').data('controller') == 'books'
     # create pathes
     self_path = location.pathname.replace(/\/edit.*$/, "/edit")
@@ -194,7 +195,7 @@ $ ->
         window.setTimeout(calc_balance, 1000)
               
       .fail (data) ->
-        console.log('error:' + data)
+        alert('データの更新に失敗しました。')
       
     # end update_receipts
   
@@ -240,7 +241,7 @@ $ ->
       window.setTimeout(calc_balance, 1000)
         
       .fail (data) ->
-        console.log('error:' + data)
+        alert('データの削除に失敗しました。')
     # end delete_btn_on_click
 
     # the function that is setting events of cell when DOM is created.

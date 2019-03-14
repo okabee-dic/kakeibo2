@@ -32,6 +32,9 @@ Rails.application.routes.draw do
       get ':id/edit/:year/:month', to: 'books#edit', as: 'edit_book_in_month'
       post ':id/get_balance', to: 'books#get_balance', as: 'book_get_balance'
     end
+
+    resources :csv_uploader, only: [:new, :create]
+
   end
   
   get 'index', to: 'pages#index'
