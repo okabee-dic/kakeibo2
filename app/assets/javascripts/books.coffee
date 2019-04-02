@@ -244,6 +244,10 @@ $ ->
         alert('データの削除に失敗しました。')
     # end delete_btn_on_click
 
+    #update_cell = ->
+      
+    # end update_cell
+
     # the function that is setting events of cell when DOM is created.
     # DOM要素が追加された際にイベントを設定する関数
     setting_events_of_cell = ($row) ->
@@ -261,6 +265,7 @@ $ ->
         $input.width( $cell.width() )
     
       # set width on load
+      # セル内のテキストとテキストボックスの幅を揃える
       $row.find('.book_edit_cell').each ->
         set_width_to_cells_and_inputs( $(this) )
 
@@ -304,6 +309,28 @@ $ ->
         # end blur
       # end edit_input each
     # end setting_events_of_cell
+
+    # on press Tab button
+    document.addEventListener 'keydown', (e) ->
+      # Tab
+      if e.keyCode == 9
+        target = document.activeElement
+        $target = $(target)
+        if $target.prop("tagName") == 'INPUT'
+          $editcells = $target.closest('table').find('.book_edit_cell')
+          $targetcell = $target.closest('.book_edit_cell')
+          cellindex = $editcells.index($targetcell)
+          $nextcell = $editcells.eq(cellindex + 1)
+          
+          if $editcells.length == cellindex + 1
+            $nextcell = $target.closest('table').find('.book_edit_cell').first()
+
+          $nextcell.addClass('editting').find('input').first().focus()
+          # end
+        e.preventDefault()
+        # end
+      # end
+
 
     # initial setting events
     $('.book_edit_table_row').each ->
