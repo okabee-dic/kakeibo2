@@ -25,7 +25,7 @@
     </div>
 
     <div class="field">
-      <%= f.label :username %>
+      <%= f.label :username , class: 'required_text' %>
       <%= f.text_field :username , id: :username %>
     </div>
     <div class="left">
@@ -33,17 +33,17 @@
     </div>
 
     <div class="field">
-      <%= f.label :email %>
+      <%= f.label :email, class: 'required_text' %>
       <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
     </div>
 
     <div class="field">
-      <%= f.label :password %>
+      <%= f.label :password , class: 'required_text'%>
       <%= f.password_field :password, autocomplete: "new-password" %>
     </div>
 
     <div class="field">
-      <%= f.label :password_confirmation %>
+      <%= f.label :password_confirmation, class: 'required_text' %>
       <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
     </div>
 
