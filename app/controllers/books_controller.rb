@@ -49,6 +49,10 @@ class BooksController < ApplicationController
   
   def index
     @books = current_user.books.all.order('id')
+
+    if @books.length == 0
+      redirect_to new_book_path
+    end
   end
   
   def destroy
@@ -136,6 +140,7 @@ class BooksController < ApplicationController
     @month = month
   end
   
+  # update method is updating book's name
   def update
     name = params[:name]
     @book.update!({

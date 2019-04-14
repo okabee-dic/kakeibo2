@@ -16,7 +16,7 @@
 
           <div class="separated_area inlineblock">
             <h3 class="caption highlighted">新しく店舗を追加する</h3>
-            <%= form_with(model: Store.new, url: book_stores_path(@book_id) ) do |f| %>
+            <%= form_with(model: Store.new, url: book_stores_path(@book_id), local: true ) do |f| %>
             <div class="separated_area_content">
               <div class="field">
                 <p>
@@ -42,14 +42,14 @@
                   <%= f.number_field :numbering, size: 6 %>
                 </p>
               </div>
-              <div class="field">
+              <!-- <div class="field">
                 <p>
                   <%= f.label :is_income %>
                 </p>
                 <p>
                   <%= f.select :is_income, [ ['', '2'], ['支出', false], ['収入', true] ] %>
                 </p>
-              </div>
+              </div> -->
               <div class="action">
                 <p class="right">
                   <%= f.submit '追加' %>
@@ -77,6 +77,9 @@
                 <th>
                   <%= t("activerecord.attributes.store.numbering") %>
                 </th>
+                <th>
+                  個数
+                </th>
                 <th>-</th>
                 <th>-</th>
               </tr>
@@ -88,14 +91,30 @@
                 <td>
                   <%= f.text_field :name, class: 'store_name' %>
                 </td>
-                <td>
-                  <%= f.collection_select :genre_id, Genre.all, :id, :name %>
+                <td class="stores_genre_cell">
+                  <%= f.collection_select :genre_id, Genre.where(:income => store.is_income), :id, :name %>
                 </td>
                 <td>
-                  <%= f.select :is_income, [ ['支出', false], ['収入', true] ] %>
+                  <!-- <%= f.select :is_income, [ ['支出', false], ['収入', true] ] %> -->
+                  <%= 
+                    if store.is_income
+                      "収入"
+                    else
+                      "支出"
+                    end 
+                  %>
                 </td>
                 <td>
                   <%= f.number_field :numbering, size: 4 %>
+                </td>
+                <td>
+                  <%= 
+                    if store.is_income
+                      @book.incomes.where(store_id: store.id).length
+                    else
+                      @book.receipts.where(store_id: store.id).length
+                    end
+                  %>
                 </td>
                 <td>
                   <%= f.submit '変更' %>

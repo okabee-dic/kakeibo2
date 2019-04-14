@@ -35,7 +35,7 @@
           <div class="field">
             <label>どの月に追加しますか？</label>
             <%= f.date_select :date, use_month_numbers: true, default: Time.now, 
-        date_separator: '/', discard_day: true %>
+        date_separator: '/', discard_day: true, :start_year => 2000 %>
           </div>
           <div class="field">
             <label>アップロードするファイル</label>

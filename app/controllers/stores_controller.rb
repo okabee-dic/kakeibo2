@@ -24,16 +24,38 @@ class StoresController < ApplicationController
   def update
     store = Store.find(params[:id])
 
+    update_data = store_params
+
     # check new store name is unique in the book
-    if @book.stores.where(:name => store_params[:name]).count > 0
+    if @book.stores.where(:name => update_data[:name], :genre_id => update_data[:genre_id]).count > 0
       flash[:notice] = "店舗名は重複して設定できません。"
       return redirect_to book_stores_path(@book_id)
     end
 
-    if store.update(store_params)
-      flash[:notice] = "店舗情報の変更に成功しました。"
+    # notice message
+    message_success = "店舗情報の変更に成功しました。"
+    message_fail = "店舗情報を変更できませんでした。"
+
+    # check locked flag, only change numbering parameter.
+    if store[:locked]
+      update_data[:name] = store[:name]
+      update_data[:genre_id] = store[:genre_id]
+      update_data[:is_income] = store[:is_income]
+      message_success = "ロックされている店舗情報は表示順のみ変えることができます。"
+    end
+
+    # is_income data is automatic setting from genre_id
+    #if update_data[:genre_id] != store[:genre_id]
+    #  update_data[:is_income] = Genre.find(update_data[:genre_id]).income
+    #end
+
+    # is_income must not be changed.
+    update_data[:is_income] = store[:is_income]
+
+    if store.update(update_data)
+      flash[:notice] = message_success
     else
-      flash[:notice] = "店舗情報を変更できませんでした。"
+      flash[:notice] = message_fail
     end
 
     redirect_to book_stores_path(@book_id)

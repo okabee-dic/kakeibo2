@@ -3,5 +3,9 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 #stores_index {
-  
+  .stores_genre_cell {
+    select {
+      width: 100%;
+    }
+  }
 }

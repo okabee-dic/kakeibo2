@@ -11,7 +11,9 @@ $ ->
       if $(this).find('.store_name').val() == window.store_index_myname
         window.store_index_samename_count++
     
-    if window.store_index_samename_count > 1
-      alert('店舗名は重複してしてできません。')
-      return false
-        
+    #if window.store_index_samename_count > 1
+    #  alert('店舗名は重複してしてできません。')
+    #  return false
+    # end
+  # end
+# end

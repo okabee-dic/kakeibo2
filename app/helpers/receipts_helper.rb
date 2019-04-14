@@ -1,8 +1,8 @@
 module ReceiptsHelper
   def find_store(store_name, is_income)
       
-    if @book.stores.exists?(:name => store_name)
-      return @book.stores.find_by(:name => store_name)
+    if @book.stores.exists?(:name => store_name, :is_income => is_income)
+      return @book.stores.find_by(:name => store_name, :is_income => is_income)
     else
       # add new store
       genre_id = Genre.where(:income => is_income).first.id
