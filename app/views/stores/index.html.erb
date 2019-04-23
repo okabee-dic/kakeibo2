@@ -77,9 +77,11 @@
                 <th>
                   <%= t("activerecord.attributes.store.numbering") %>
                 </th>
+                <% if current_user.admin %>
                 <th>
                   個数
                 </th>
+                <% end %>
                 <th>-</th>
                 <th>-</th>
               </tr>
@@ -107,6 +109,7 @@
                 <td>
                   <%= f.number_field :numbering, size: 4 %>
                 </td>
+                <% if current_user.admin %>
                 <td>
                   <%= 
                     if store.is_income
@@ -116,6 +119,7 @@
                     end
                   %>
                 </td>
+                <% end %>
                 <td>
                   <%= f.submit '変更' %>
                 </td>
