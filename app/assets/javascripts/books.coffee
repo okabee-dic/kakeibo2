@@ -244,10 +244,6 @@ $ ->
         alert('データの削除に失敗しました。')
     # end delete_btn_on_click
 
-    #update_cell = ->
-      
-    # end update_cell
-
     # the function that is setting events of cell when DOM is created.
     # DOM要素が追加された際にイベントを設定する関数
     setting_events_of_cell = ($row) ->
