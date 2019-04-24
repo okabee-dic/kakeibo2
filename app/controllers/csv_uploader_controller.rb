@@ -1,5 +1,5 @@
-require 'csv'
-require 'kconv'
+require "csv"
+require "kconv"
 
 class CsvUploaderController < ApplicationController
   include BooksHelper
@@ -10,44 +10,81 @@ class CsvUploaderController < ApplicationController
   before_action :your_book?
 
   def new
-
   end
 
   def create
-    #params = uploader_params
     text = params[:upload_file].read
-    #date = params[:date]
     year = params["date(1i)"].to_i
-    month = params["date(2i)"].to_i   
+    month = params["date(2i)"].to_i
     add_count = 0
+    is_multimode = false
     CSV.parse(Kconv.toutf8(text)) do |row|
-      price = row[2].to_i
-      pay_date = row[0].to_i
-      
-      if row.length >= 3    
-        if( price < 0)
+      # if first row is "kakeibo_csv", then multi-monthes mode.
+      # 最初の文字列が"kakeibo_csv"なら、複数月をまとめて入力する
+      if (row[0] == "kakeibo_csv")
+        is_multimode = true
+        next
+      end
+
+      store_name = ""
+
+      # input to variables
+      unless is_multimode
+        price = row[2].to_i
+        pay_date = row[0].to_i
+        store_name = row[1]
+      else
+        price = row[4].to_i
+        pay_date = row[2].to_i
+        store_name = row[3]
+        month = row[1].to_i
+        year = row[0].to_i
+        # year must be over 0
+        if year <= 0
+          year = nil
+        end
+      end
+
+      binding.pry
+
+      # data check
+      if price == nil || pay_date == nil || store_name == nil || year == nil || month == nil
+        next
+      end
+      if pay_date == 0 || month == 0
+        next
+      end
+
+      if row.length >= 3
+        if (price < 0)
           #receipt
-          store = find_store( row[1], false)
+          store = find_store(store_name, false)
+          date = Date.new(year, month, pay_date)
+          if date == nil
+            next
+          end
           writedata = {
-            pay_date: Date.new(year, month, pay_date),
-            price: -1*price ,
-            store_id: store.id
+            pay_date: date,
+            price: -1 * price,
+            store_id: store.id,
           }
           receipt = @book.receipts.new(writedata)
           if receipt.save
             add_count = add_count + 1
           end
-          a = 1
-
         elsif price == 0
           # do nothing
         else
           #income
-          store = find_store( row[1], true)
+          store = find_store(store_name, true)
+          date = Date.new(year, month, pay_date)
+          if date == nil
+            next
+          end
           writedata = {
-            pay_date: Date.new(year, month, pay_date),
-            price: price.to_i ,
-            store_id: store.id
+            pay_date: date,
+            price: price,
+            store_id: store.id,
           }
 
           income = @book.incomes.new(writedata)
@@ -58,7 +95,7 @@ class CsvUploaderController < ApplicationController
       else
         # csv is too short
         # do nothing
-      end  
+      end
     end
     # end add from csv
     if add_count > 0
@@ -71,6 +108,7 @@ class CsvUploaderController < ApplicationController
   end
 
   private
+
   def uploader_params
     params.permit(:upload_file, :date)
   end

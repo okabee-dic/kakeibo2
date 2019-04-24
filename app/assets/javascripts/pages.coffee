@@ -22,8 +22,26 @@ $ ->
         # end
       # end
     # end
+  # end
+
   mh_class_callback()
 
   $('window').on 'resize', ->
     mh_class_callback()
   # end
+
+  # separated area accordion
+  $('.separated_area').each ->
+    $this = $(this)
+    $this.children('.caption').first().on 'click', ->
+      $this = $(this)
+      $this.parent().find('.separated_area_content').first().slideToggle()
+      $this.parent().toggleClass('hide')
+    # end
+    $this.width( $this.find('.separated_area_content').first().outerWidth() )
+
+    if $this.hasClass('hide')
+      $this.find('.separated_area_content').first().slideUp()
+    # end
+  # end
+

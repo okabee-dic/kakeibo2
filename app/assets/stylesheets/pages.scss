@@ -202,6 +202,14 @@ body {
   width: 90%;
 }
 
+.w80p {
+  width: 80%;
+}
+
+.w70p {
+  width: 70%;
+}
+
 .p10 {
   padding: 1rem;
 }
@@ -478,6 +486,7 @@ body {
 .separated_area {
   background-color: #f2f8fd;
   border: 1px solid #c4c5c6;
+  margin-bottom: 10px;
 
   &.pink {
     background-color: #f7f1f3;
@@ -492,20 +501,35 @@ body {
     background-color: #5a99d7;
     color: white;
     font-weight: 600;
-
-
   }
 
   .caption {
     font-size: 1.4rem;
     text-align: center;
-    margin-bottom: 1rem;
     padding: 6px;
+    position: relative;
+
+    &:before {
+      content: '\f138';
+      font-family: FontAwesome;
+      color: white;
+      position: absolute;
+      left: 6px;
+      transform: rotate(90deg);
+      transition: transform 400ms ease-out;
+    }
+  }
+
+  &.hide {
+    .caption{
+      &:before {
+        transform: rotate(0deg);
+      }
+    }
   }
 
   .separated_area_content {
-    padding: 0rem 2rem;
-    padding-bottom: 1rem;
+    padding: 1rem 2rem;
   }
 
   input,

@@ -12,19 +12,37 @@
         </div>
       </h2>
       <div class="flex w100p center">
-        <div class="monthlyinput_new_form separated_area inlineblock">
+        <div class="monthlyinput_new_form separated_area inlineblock w70p">
           <h3 class="caption highlighted">CSVファイルの形式について</h3>
           <div class="separated_area_content">
+            <div>
+              <p>
+                支払日,店名,金額&nbsp;の形式で入力してください。<br>
+                金額がマイナスの数値の場合、支出となります。
+              </p>
+              <p class="left mt10">例:)</p>
+              <p>
+                21,支出,-1234<br>
+                25,収入,5678
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex w100p center">
+        <div class="monthlyinput_new_form separated_area inlineblock hide w70p">
+          <h3 class="caption highlighted">まとめてアップロードする場合</h3>
+          <div class="separated_area_content">
             <p>
-              支払日,店名,金額&nbsp;の形式で入力してください。<br>
+              最初の行に&nbsp;kakeibo_csv&nbsp;と入力してください。<br>
+              次の行から,&nbsp;西暦,月,支払日,店名,金額&nbsp;の形式で入力してください。<br>
               金額がマイナスの数値の場合、支出となります。
             </p>
             <p class="left mt10">例:)</p>
             <p>
-              21,支出,-1234<br>
-              25,収入,5678
-            <p>
-
+              2019,3,21,支出,-1234<br>
+              2019,3,25,収入,5678
+            </p>
           </div>
         </div>
       </div>
