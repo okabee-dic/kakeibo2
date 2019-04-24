@@ -308,8 +308,8 @@ $ ->
 
     # on press Tab button
     document.addEventListener 'keydown', (e) ->
-      # Tab
-      if e.keyCode == 9
+      # Tab or Enter
+      if e.keyCode == 9 || e.keyCode == 13
         target = document.activeElement
         $target = $(target)
         if $target.prop("tagName") == 'INPUT'
@@ -319,14 +319,24 @@ $ ->
           $nextcell = $editcells.eq(cellindex + 1)
           
           if $editcells.length == cellindex + 1
-            $nextcell = $target.closest('table').find('.book_edit_cell').first()
+            if e.keyCode == 9
+              # on Tab, go to first
+              $nextcell = $target.closest('table').find('.book_edit_cell').first()
+            else
+              # on Enter, go to new input
+              target.blur()
+              $nextcell = $target.closest('.book_edit_table_new_row')
+              .children('.column_pay_date').first()
+            # end
+          # end
 
           $nextcell.addClass('editting').find('input').first().focus()
-          # end
-        e.preventDefault()
+          # scroll to the target
+          $("html,body").animate( { scrollTop: $nextcell.offset().top } )
         # end
+        e.preventDefault()
       # end
-
+    # end
 
     # initial setting events
     $('.book_edit_table_row').each ->
