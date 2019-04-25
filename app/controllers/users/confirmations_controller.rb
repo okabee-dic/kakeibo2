@@ -17,7 +17,6 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
        #respond_with(resource)
        redirect_to users_send_confirm_path
      end
-     binding.pry
    end
 
   # GET /resource/confirmation?confirmation_token=abcdef
