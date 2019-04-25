@@ -1,6 +1,6 @@
-require_relative 'boot'
+require_relative "boot"
 
-require 'rails/all'
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -25,5 +25,7 @@ module Kakeibo
         request_specs: false
       g.fixture_replacement :factory_bot, dir: "spec/factories"
     end
+
+    config.assets.initialize_on_precompile = false
   end
 end
