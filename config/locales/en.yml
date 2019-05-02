@@ -38,3 +38,8 @@ en:
     receiveinstruction: Didn't receive confirmation instructions?
     login: log in
     minimum_password_length: characters minimum
+
+  activerecord:
+    attributes:
+      store:
+        count: count

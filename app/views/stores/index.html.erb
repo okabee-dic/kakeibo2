@@ -42,14 +42,6 @@
                   <%= f.number_field :numbering, size: 6 %>
                 </p>
               </div>
-              <!-- <div class="field">
-                <p>
-                  <%= f.label :is_income %>
-                </p>
-                <p>
-                  <%= f.select :is_income, [ ['', '2'], ['支出', false], ['収入', true] ] %>
-                </p>
-              </div> -->
               <div class="action">
                 <p class="right">
                   <%= f.submit '追加' %>
@@ -79,7 +71,7 @@
                 </th>
                 <% if current_user.admin %>
                 <th>
-                  個数
+                  <%= t("activerecord.attributes.store.count") %>
                 </th>
                 <% end %>
                 <th>-</th>
@@ -97,7 +89,6 @@
                   <%= f.collection_select :genre_id, Genre.where(:income => store.is_income), :id, :name %>
                 </td>
                 <td>
-                  <!-- <%= f.select :is_income, [ ['支出', false], ['収入', true] ] %> -->
                   <%= 
                     if store.is_income
                       "収入"

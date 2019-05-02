@@ -8,6 +8,9 @@ ja:
       confirmed: "アカウントが確認されました。ログインしています。"
       send_instructions: "アカウントの確認方法を数分以内にメールでご連絡します。"
       send_paranoid_instructions: "ご登録のメールアドレスが保存されている場合、アカウントの確認方法をメールでご連絡します。"
+      resend_email: "メールの再送信"
+      resend_button_text: "送信"
+
     failure:
       already_authenticated: "既にログインしています。"
       inactive: "Your account is not activated yet."

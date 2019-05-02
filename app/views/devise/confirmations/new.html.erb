@@ -1,7 +1,24 @@
-<h2>Resend confirmation instructions</h2>
+<h2 class="flex center mt20">
+  <div class="page_title underlined pink">
+    <p>
+      <%= t('devise.confirmations.resend_email') %>
+    </p>
+  </div>
+</h2>
 
-<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-  <%= devise_error_messages! %>
+<% unless devise_error_messages! == '' %>
+<div class="flex center">
+  <div class="separated_area pink mb10 w70p">
+    <h3 class="caption highlighted">登録エラー</h3>
+    <div class="separated_area_content">
+      <%= devise_error_messages! %>
+    </div>
+  </div>
+</div>
+<% end %>
+
+<div class="flex center form registration_form">
+  <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
 
   <div class="field">
     <%= f.label :email %><br />
@@ -9,8 +26,12 @@
   </div>
 
   <div class="actions">
-    <%= f.submit "Resend confirmation instructions" %>
+    <%= f.submit t('devise.confirmations.resend_button_text') %>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+  <% end %>
+</div>
+<div class="flex center">
+  <div>
+    <%= render "devise/shared/links" %>
+  </div>
+</div>

@@ -14,8 +14,7 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
     if successfully_sent?(resource)
       redirect_to users_send_confirm_path
     else
-      #respond_with(resource)
-      redirect_to users_send_confirm_path
+      respond_with(resource)
     end
   end
 

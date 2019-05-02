@@ -23,6 +23,7 @@ ja:
         genre_id: 種類
         is_income: 属性
         numbering: 順番
+        count: 個数
       monthlyinput:
         pay_date: 支払日
         price: 価格
