@@ -10,6 +10,7 @@ class CsvUploaderController < ApplicationController
   before_action :your_book?
 
   def new
+    #
   end
 
   def create
