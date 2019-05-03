@@ -1,22 +1,32 @@
-<%= form_with(url: users_oauth_registration_path , model: @user ) do |f| %>
+<h2 class="flex center mt20">
+  <div class="page_title underlined pink">
+    <p>
+      <%= ユーザー情報の入力 %>
+    </p>
+  </div>
+</h2>
+
+<div class="flex center form registration_form">
+  <%= form_with(url: users_oauth_registration_path , model: @user, local:true ) do |f| %>
   <div class="field">
     <%= f.label :name %>
     <%= f.text_field :name %>
   </div>
-  
+
   <div class="field">
     <%= f.label :username %>
     <%= f.text_field :username , id: :username %>
     <p id="username_checkresult"></p>
   </div>
-  
-  
-    <%= f.hidden_field :uid, value: @user.uid %>
-    <%= f.hidden_field :provider, value: @user.provider %>
-    <%= f.hidden_field :email, value: @user.email %>
-    <%= f.hidden_field :sex, value: @user.sex %>
-  
+
+
+  <%= f.hidden_field :uid, value: @user.uid %>
+  <%= f.hidden_field :provider, value: @user.provider %>
+  <%= f.hidden_field :email, value: @user.email %>
+  <%= f.hidden_field :sex, value: @user.sex %>
+
   <div class="actions">
     <%= f.submit "Sign up" %>
   </div>
-<% end %>
+  <% end %>
+</div>
