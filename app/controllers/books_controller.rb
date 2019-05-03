@@ -17,6 +17,8 @@ class BooksController < ApplicationController
       book.save
       if book.persisted?
         # create default stores
+        # デフォルトの店舗情報を追加
+
         # default receipt
         genre_id = Genre.find_by(:income => false).id
         store = book.stores.create({
@@ -60,6 +62,7 @@ class BooksController < ApplicationController
   end
 
   def edit
+    # book/[bookid]/edit/[year]/[month]
     # setting month and year
     today = Date.today
     year = today.year
@@ -95,7 +98,6 @@ class BooksController < ApplicationController
 
     # add monthly inputs
     monthlyinputs.each do |m|
-      #if m.start_date <= today && m.end_date >= today
       new_input = {
         store_id: m.store_id,
         price: m.price,
@@ -111,7 +113,6 @@ class BooksController < ApplicationController
         @receipts.push(data)
         @total_receipts = @total_receipts + m.price
       end
-      #end
     end
 
     # add incomes
@@ -158,6 +159,8 @@ class BooksController < ApplicationController
     render plain: result.to_json
   end
 
+  # get_balance method is called when receipts are changed.
+  # レシート情報が更新された際に呼ばれて収入と支出の情報を返す
   def get_balance
     month = params[:month].to_i
     year = params[:year].to_i
@@ -215,7 +218,6 @@ class BooksController < ApplicationController
 
     # add monthly inputs
     monthlyinputs.each do |m|
-      #if m.start_date <= today && m.end_date >= today
       new_input = {
         store_id: m.store_id,
         price: m.price,
@@ -231,7 +233,6 @@ class BooksController < ApplicationController
         receipts_array.push(data)
         total_receipts = total_receipts + m.price
       end
-      #end
     end
 
     # add incomes

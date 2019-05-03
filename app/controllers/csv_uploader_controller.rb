@@ -21,7 +21,7 @@ class CsvUploaderController < ApplicationController
     CSV.parse(Kconv.toutf8(text)) do |row|
       # if first row is "kakeibo_csv", then multi-monthes mode.
       # 最初の文字列が"kakeibo_csv"なら、複数月をまとめて入力する
-      if (row[0] == "kakeibo_csv")
+      if (row[0] == "kakeibo_csv" && is_multimode == false)
         is_multimode = true
         next
       end
@@ -44,8 +44,6 @@ class CsvUploaderController < ApplicationController
           year = nil
         end
       end
-
-      binding.pry
 
       # data check
       if price == nil || pay_date == nil || store_name == nil || year == nil || month == nil
