@@ -4,8 +4,7 @@ $ ->
 
   # only exec on registrations controller
   if controller == 'registrations'
-    if action == 'new' || action == 'edit' || action == 'create' ||
-    action == 'update' || action == 'oauth_registration'
+    if action == 'new' || action == 'edit' || action == 'create' || action == 'update' || action == 'oauth_registration'
 
       $('#postcode').jpostal({
         postcode: $('#postcode'),
