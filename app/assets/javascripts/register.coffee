@@ -4,7 +4,9 @@ $ ->
 
   # only exec on registrations controller
   if controller == 'registrations'
-    if action == 'new' || action == 'edit' || action == 'create' || action == 'update'
+    if action == 'new' || action == 'edit' || action == 'create' ||
+       action == 'update' || action == 'oauth_registration'
+
       $('#postcode').jpostal({
         postcode: $('#postcode'),
         address: {
@@ -17,7 +19,7 @@ $ ->
     # check_username
     $('#username').on 'input', ->
       username = $('#username').val()
-      $.post( '/users/check_username', 'username='+ username )
+      $.post( '/users/check_username', 'username=' + username )
       .done (data) ->
         result = $.parseJSON(data)
       
