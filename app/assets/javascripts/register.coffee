@@ -3,7 +3,7 @@ $ ->
   action = $('body').first().data('action')
 
   # only exec on registrations controller
-  if controller == 'registrations'
+  if controller == 'registrations' || controller == 'omniauth_callbacks'
     if action == 'new' || action == 'edit' || action == 'create' ||
     action == 'update' || action == 'oauth_registration' || action == 'facebook'
 
