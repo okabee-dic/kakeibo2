@@ -115,6 +115,10 @@ $ ->
         return
       if price == ""
         return
+      if isNaN(pay_date)
+        return
+      if isNaN(price)
+        return
       
       # create path
       # create or update, destroy is in another function
