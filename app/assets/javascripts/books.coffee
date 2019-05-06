@@ -178,10 +178,14 @@ $ ->
           $tr = $(row_text)
           $tr.appendTo($parent)
           
+          
           # sort table
           $parent.closest('table').trigger("update")
           # new item from goes to the last
-          $parent.children('.book_edit_table_new_row').first().appendTo($parent)
+          $newrow = $parent.children('.book_edit_table_new_row').first().appendTo($parent)
+          # focus to new input
+          $newrow.find('input').first().focus()
+
           # reset events
           setting_events_of_cell($tr)
         else
@@ -334,9 +338,11 @@ $ ->
             # end
           # end
 
-          $nextcell.addClass('editting').find('input').first().focus()
+          $nexttarget = $nextcell.addClass('editting').find('input').first()
           # scroll to the target
           $("html,body").animate( { scrollTop: $nextcell.offset().top } )
+
+          $nexttarget.focus()
         # end
         e.preventDefault()
       # end
