@@ -185,6 +185,8 @@ $ ->
           $newrow = $parent.children('.book_edit_table_new_row').first().appendTo($parent)
           # focus to new input
           $newrow.find('input').first().focus()
+          # scroll to the target
+          $("html,body").animate( { scrollTop: $newrow.offset().top } )
 
           # reset events
           setting_events_of_cell($tr)
