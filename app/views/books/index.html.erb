@@ -11,6 +11,7 @@
       <thead>
         <tr>
           <th><%= t("activerecord.attributes.book.name") %></th>
+          <th>公開する</th>
           <th>-</th>
           <th>-</th>
         </tr>
@@ -27,6 +28,12 @@
             <span class="books_index_edit_name_input_area">
               <input value="<%= book.name %>" class="books_index_edit_name_input">
             </span>
+          </td>
+          <td>
+            <%= 
+              flag = book.allow_show
+              check_box 'allow_show', 'freezeflag', {:checked => flag, class: 'allow_show_checkbox'}, true, false
+            %>
           </td>
           <td>
             <p class="commonbtn books_index_edit_name_btn">名前変更</p>

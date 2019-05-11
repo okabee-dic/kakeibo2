@@ -18,9 +18,13 @@
     <input class="book_edit_cell_input" value="<%= receipt.price %>">
   </td>
   <td>
+    <% unless controller.action_name == 'show' %>
     <button class="book_edit_delete_btn" data-rowid="<%= receipt.id %>" data-rowtype="<%= type %>">
       delete
     </button>
+    <% else %>
+      -
+    <% end %>
   </td>
   <% else %>
   <td class="column_pay_date">

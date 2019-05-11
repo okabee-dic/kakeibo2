@@ -1,146 +1,182 @@
 <article id="book_edit" class="h100p mh100p">
-  <div class="flex align_items_stretch fullheight_with_bottomview">
-    <aside class="book_sidebar">
-      <%= render 'books/sidebar' %>
-    </aside>
-    <div class="container w100p center padding_for_bottomview content-box mt10">
-      <h2 class="flex center">
-        <div class="page_title underlined pink">
-          <p>
-            <%= @book.name %>
-          </p>
-        </div>
-      </h2>
-      <section id="book_edit_date_select">
-        <div class="dates_container flex">
-          <div>
-            <% last_date = @showing_date.last_month %>
-            <%= link_to "<<#{ last_date.strftime("%Y年%m月") }", edit_book_in_month_books_path(@book_id, last_date.year, last_date.month) %>
-          </div>
-          <div>
-            <%= @showing_date.strftime("%Y年%m月")%>
-          </div>
-          <div>
-            <% next_date = @showing_date.next_month %>
-            <%= link_to "#{ next_date.strftime("%Y年%m月") }>>", edit_book_in_month_books_path(@book_id, next_date.year, next_date.month) %>
-          </div>
-        </div>
-      </section> <!-- id="book_edit_date_select" -->
+	<div class="flex align_items_stretch fullheight_with_bottomview">
+		<aside class="book_sidebar">
+			<%= render 'books/sidebar' %>
+		</aside>
+		<div class="container w100p center padding_for_bottomview content-box mt10">
+			<h2 class="flex center">
+				<div class="page_title underlined pink">
+					<p>
+						<%= @book.name %>
+					</p>
+				</div>
+			</h2>
+			<section id="book_edit_date_select">
+				<div class="dates_container flex">
+					<div>
+						<% last_date = @showing_date.last_month %>
+            <%=
+              unless controller.action_name == 'show'
+                link_to "<<#{ last_date.strftime("%Y年%m月") }", 
+                edit_book_in_month_books_path(@book_id, last_date.year, last_date.month) 
+              else
+                link_to "<<#{ last_date.strftime("%Y年%m月") }", 
+                show_book_in_month_books_path(@book_id, last_date.year, last_date.month) 
+              end
+            %>
+					</div>
+					<div>
+						<%= @showing_date.strftime("%Y年%m月")%>
+					</div>
+					<div>
+						<% next_date = @showing_date.next_month %>
+            <%= 
+              unless controller.action_name == 'show'
+                link_to "#{ next_date.strftime("%Y年%m月") }>>", 
+                edit_book_in_month_books_path(@book_id, next_date.year, next_date.month)
+              else
+                link_to "#{ next_date.strftime("%Y年%m月") }>>", 
+                show_book_in_month_books_path(@book_id, next_date.year, next_date.month)
+              end
+            %>
+					</div>
+				</div>
+			</section> <!-- id="book_edit_date_select" -->
 
-      <section id="book_edit_main" data-month="<%= @month %>" data-year="<%= @year %>">
-        <ul class="nomarker flex center">
-          <li>
-            <section id="book_edit_receipts">
-              <div class="book_edit_table">
-                <table>
-                  <thead>
-                    <tr>
-                      <th colspan="4"><%= t("receipt.receipt") %></th>
-                    </tr>
-                    <tr>
-                      <th><%= t("receipt.pay_date") %></th>
-                      <th><%= t("receipt.store") %></th>
-                      <th><%= t("receipt.price") %></th>
-                      <th>-</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% @receipts.each do |receipt| %>
-                      <%= render :partial => "receipt_row", :locals => {receipt: receipt, type: "receipt"} %>
+			<section id="book_edit_main" data-month="<%= @month %>" data-year="<%= @year %>">
+				<ul class="nomarker flex center">
+					<li>
+						<section id="book_edit_receipts">
+							<div class="book_edit_table">
+								<table>
+									<thead>
+										<tr>
+											<th colspan="4"><%= t("receipt.receipt") %></th>
+										</tr>
+										<tr>
+											<th><%= t("receipt.pay_date") %></th>
+											<th><%= t("receipt.store") %></th>
+											<th><%= t("receipt.price") %></th>
+											<th>-</th>
+										</tr>
+									</thead>
+									<tbody>
+										<% @receipts.each do |receipt| %>
+											<%= render :partial => "receipt_row", :locals => {receipt: receipt, type: "receipt"} %>
+										<% end %>
+										<% unless controller.action_name == 'show' %>
+										<tr class="book_edit_table_new_row" data-rowid="-1" data-rowtype="receipt">
+											<td class="book_edit_cell column_pay_date">
+												<span class="book_edit_cell_text"></span>
+												<input class="book_edit_cell_input" value="">
+											</td>
+											<td class="book_edit_cell column_store">
+												<span class="book_edit_cell_text"></span>
+												<input class="book_edit_cell_input" value="">
+											</td>
+											<td class="book_edit_cell column_price">
+												<span class="book_edit_cell_text"></span>
+												<input class="book_edit_cell_input" value="">
+											</td>
+											<td>
+												<p class="size_14">&nbsp;</p>
+											</td>
+										</tr>
+                    <% else %>
+                      <% if @receipts.length == 0 %>
+                        <tr>
+                        <td colspan="4">
+                          データがありません。
+                        </td>
+                        </tr>
+                      <% end %>
+										<% end %>
+									</tbody>
+								</table>
+							</div>
+						</section><!-- id="book_edit_receipts" -->
+					</li>
+					<li>
+						<section id="book_edit_incomes">
+							<div class="book_edit_table">
+								<table>
+									<thead>
+										<tr>
+											<th colspan="4"><%= t("receipt.income") %></th>
+										</tr>
+										<tr>
+											<th><%= t("receipt.pay_date") %></th>
+											<th><%= t("receipt.store") %></th>
+											<th><%= t("receipt.price") %></th>
+											<th>-</th>
+										</tr>
+									</thead>
+									<tbody>
+										<% @incomes.each do |income| %>
+											<%= render :partial => "receipt_row", :locals => {receipt: income, type: "income"} %>
+										<% end %>
+                    <% unless controller.action_name == 'show' %>
+										<tr class="book_edit_table_new_row" data-rowid="-1" data-rowtype="income">
+											<td class="book_edit_cell column_pay_date">
+												<span class="book_edit_cell_text"></span>
+												<input class="book_edit_cell_input" value="">
+											</td>
+											<td class="book_edit_cell column_store">
+												<span class="book_edit_cell_text"></span>
+												<input class="book_edit_cell_input" value="">
+											</td>
+											<td class="book_edit_cell column_price">
+												<span class="book_edit_cell_text"></span>
+												<input class="book_edit_cell_input" value="">
+											</td>
+											<td class="">
+												<p class="size_14">&nbsp;</p>
+											</td>
+										</tr>
+                    <% else %>
+                      <% if @incomes.length == 0 %>
+                        <tr>
+                        <td colspan="4">
+                          データがありません。
+                        </td>
+                        </tr>
+                      <% end %>
                     <% end %>
-                    <tr class="book_edit_table_new_row" data-rowid="-1" data-rowtype="receipt">
-                      <td class="book_edit_cell column_pay_date">
-                        <span class="book_edit_cell_text"></span>
-                        <input class="book_edit_cell_input" value="">
-                      </td>
-                      <td class="book_edit_cell column_store">
-                        <span class="book_edit_cell_text"></span>
-                        <input class="book_edit_cell_input" value="">
-                      </td>
-                      <td class="book_edit_cell column_price">
-                        <span class="book_edit_cell_text"></span>
-                        <input class="book_edit_cell_input" value="">
-                      </td>
-                      <td>
-                        <p class="size_14">&nbsp;</p>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </section><!-- id="book_edit_receipts" -->
-          </li>
-          <li>
-            <section id="book_edit_incomes">
-              <div class="book_edit_table">
-                <table>
-                  <thead>
-                    <tr>
-                      <th colspan="4"><%= t("receipt.income") %></th>
-                    </tr>
-                    <tr>
-                      <th><%= t("receipt.pay_date") %></th>
-                      <th><%= t("receipt.store") %></th>
-                      <th><%= t("receipt.price") %></th>
-                      <th>-</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% @incomes.each do |income| %>
-                      <%= render :partial => "receipt_row", :locals => {receipt: income, type: "income"} %>
-                    <% end %>
-                    <tr class="book_edit_table_new_row" data-rowid="-1" data-rowtype="income">
-                      <td class="book_edit_cell column_pay_date">
-                        <span class="book_edit_cell_text"></span>
-                        <input class="book_edit_cell_input" value="">
-                      </td>
-                      <td class="book_edit_cell column_store">
-                        <span class="book_edit_cell_text"></span>
-                        <input class="book_edit_cell_input" value="">
-                      </td>
-                      <td class="book_edit_cell column_price">
-                        <span class="book_edit_cell_text"></span>
-                        <input class="book_edit_cell_input" value="">
-                      </td>
-                      <td class="">
-                        <p class="size_14">&nbsp;</p>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </section><!-- id="book_edit_incomes" -->
-          </li>
-        </ul>
-      </section><!-- id="book_edit_main" -->
-    </div> <!-- class="container" -->
+									</tbody>
+								</table>
+							</div>
+						</section><!-- id="book_edit_incomes" -->
+					</li>
+				</ul>
+			</section><!-- id="book_edit_main" -->
+		</div> <!-- class="container" -->
 
-  </div> <!-- class="flex" -->
-  <section id="book_edit_total_view">
-    <div id="book_edit_total_container" class="flex space_around">
-      <div class="flex" id="book_edit_total_receipts_and_incomes">
-        <div id="book_edit_total_receipts">
-          <p class="total_caption">支出</p>
-          <p class="total_result underlined">
-            <span class="total_price">
-              <%= @total_receipts %></span>円
-          </p>
-        </div>
-        <div id="book_edit_total_incomes">
-          <p class="total_caption">収入</p>
-          <p class="total_result underlined">
-            <span class="total_price">
-              <%= @total_incomes %></span>円
-          </p>
-        </div>
-      </div> <!-- id="book_edit_total_receipts_and_incomes" -->
-      <div id="book_edit_total_result">
-        <p class="total_caption">合計</p>
-        <p class="total_result underlined">
-          <span class="total_price">
-            <%= @total_result %></span>円
-        </p>
-      </div>
-    </div>
-  </section><!-- id="book_edit_total_view" -->
+	</div> <!-- class="flex" -->
+	<section id="book_edit_total_view">
+		<div id="book_edit_total_container" class="flex space_around">
+			<div class="flex" id="book_edit_total_receipts_and_incomes">
+				<div id="book_edit_total_receipts">
+					<p class="total_caption">支出</p>
+					<p class="total_result underlined">
+						<span class="total_price">
+							<%= @total_receipts %></span>円
+					</p>
+				</div>
+				<div id="book_edit_total_incomes">
+					<p class="total_caption">収入</p>
+					<p class="total_result underlined">
+						<span class="total_price">
+							<%= @total_incomes %></span>円
+					</p>
+				</div>
+			</div> <!-- id="book_edit_total_receipts_and_incomes" -->
+			<div id="book_edit_total_result">
+				<p class="total_caption">合計</p>
+				<p class="total_result underlined">
+					<span class="total_price">
+						<%= @total_result %></span>円
+				</p>
+			</div>
+		</div>
+	</section><!-- id="book_edit_total_view" -->
 </article> <!-- id="book_edit" -->

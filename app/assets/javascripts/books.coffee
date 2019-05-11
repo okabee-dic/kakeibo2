@@ -252,102 +252,118 @@ $ ->
         
       .fail (data) ->
         alert('データの削除に失敗しました。')
+      # end
     # end delete_btn_on_click
 
     # the function that is setting events of cell when DOM is created.
     # DOM要素が追加された際にイベントを設定する関数
+    # do not fire events when this script is called by 'show' action.
+    # show メソッドの場合は、編集できないようにするため、イベントを呼び出さない。
     setting_events_of_cell = ($row) ->
       # on click delete btn
-      $row.find('.book_edit_delete_btn').each ->
-        $btn = $(this)
-        $btn.on 'click', ->
-          delete_btn_on_click(this)
-      # end delete btn on click
+      if( $('body').data('action') != "show")
+        $row.find('.book_edit_delete_btn').each ->
+          $btn = $(this)
+          $btn.on 'click', ->
+            delete_btn_on_click(this)
+          # end
+        # end delete btn on click
+      # end
 
       # set same width to cells and inputs
       # セルとinputのサイズを合わせる
       set_width_to_cells_and_inputs = ($cell) ->
         $input = $cell.children('input').first()
         $input.width( $cell.width() )
+      # end
     
       # set width on load
       # セル内のテキストとテキストボックスの幅を揃える
       $row.find('.book_edit_cell').each ->
         set_width_to_cells_and_inputs( $(this) )
+      # end
 
       # on focus edit cell
       # toggle to show the input and hide the text
       # セルをクリックするとinputに切り替える
-      $row.find('.book_edit_cell').each ->
-        $(this).on 'click', ->
-          $this = $(this)
-          # remove editting class which other cells have
-          $('.editting').removeClass('editting')
-          # set editting class to myself
-          $this.addClass('editting')
-          # focus on my input
-          $this.children('input').first().focus()
+      if( $('body').data('action') != "show")
+        $row.find('.book_edit_cell').each ->
+          $(this).on 'click', ->
+            $this = $(this)
+            # remove editting class which other cells have
+            $('.editting').removeClass('editting')
+            # set editting class to myself
+            $this.addClass('editting')
+            # focus on my input
+            $this.children('input').first().focus()
+          # end
+        # end
+      #end
   
       $row.find('.book_edit_cell_input').each ->
         # on focus out, send data and toggle showing of input and text
         # inputからフォーカスが外れると編集したデータを送信
         # 送信後、inputを非表示にしてテキストを表示する
-        $(this).on 'blur', ->
-          $this = $(this)
-          # if price, add separates
-          if $this.parents('.column_price').length
-            value = add_separates( $this.val() )
-          else
-            value = $this.val()
+        if( $('body').data('action') != "show")
+          $(this).on 'blur', ->
+            $this = $(this)
+            # if price, add separates
+            if $this.parents('.column_price').length
+              value = add_separates( $this.val() )
+            else
+              value = $this.val()
     
-          # Hide input on focus out
-          $this.closest('.editting').removeClass('editting')
-          .children('.book_edit_cell_text').first().text( value )
+            # Hide input on focus out
+            $this.closest('.editting').removeClass('editting')
+            .children('.book_edit_cell_text').first().text( value )
       
-          # post input
-          $row = $this.closest('tr')
-          update_receipts($row)
+            # post input
+            $row = $this.closest('tr')
+            update_receipts($row)
 
-          # resize input width to new cell width
-          $this.closest('tbody').find('.book_edit_cell').each ->
-            set_width_to_cells_and_inputs( $(this) )
-          # end
-        # end blur
+            # resize input width to new cell width
+            $this.closest('tbody').find('.book_edit_cell').each ->
+              set_width_to_cells_and_inputs( $(this) )
+            # end
+          # end blur
+        # end
       # end edit_input each
     # end setting_events_of_cell
 
     # on press Tab button
-    document.addEventListener 'keydown', (e) ->
-      # Tab or Enter
-      if e.keyCode == 9 || e.keyCode == 13
-        target = document.activeElement
-        $target = $(target)
-        if $target.prop("tagName") == 'INPUT'
-          $editcells = $target.closest('table').find('.book_edit_cell')
-          $targetcell = $target.closest('.book_edit_cell')
-          cellindex = $editcells.index($targetcell)
-          $nextcell = $editcells.eq(cellindex + 1)
+    if( $('body').data('action') != "show")
+      document.addEventListener 'keydown', (e) ->
+        # Tab or Enter
+        if e.keyCode == 9 || e.keyCode == 13
+          target = document.activeElement
+          $target = $(target)
+          if $target.prop("tagName") == 'INPUT'
+            $editcells = $target.closest('table').find('.book_edit_cell')
+            $targetcell = $target.closest('.book_edit_cell')
+            cellindex = $editcells.index($targetcell)
+            $nextcell = $editcells.eq(cellindex + 1)
           
-          if $editcells.length == cellindex + 1
-            if e.keyCode == 9
-              # on Tab, go to first
-              $nextcell = $target.closest('table').find('.book_edit_cell').first()
-            else
-              # on Enter, go to new input
-              target.blur()
-              $nextcell = $target.closest('.book_edit_table_new_row')
-              .children('.column_pay_date').first()
+            if $editcells.length == cellindex + 1
+              if e.keyCode == 9
+                # on Tab, go to first
+                $nextcell = $target.closest('table').find('.book_edit_cell').first()
+              else
+                # on Enter, go to new input
+                target.blur()
+                $nextcell = $target.closest('.book_edit_table_new_row')
+                .children('.column_pay_date').first()
+              # end
             # end
+
+            $nexttarget = $nextcell.addClass('editting').find('input').first()
+            # scroll to the target
+            $("html,body").animate( { scrollTop: $nextcell.offset().top } )
+
+            $nexttarget.focus()
           # end
-
-          $nexttarget = $nextcell.addClass('editting').find('input').first()
-          # scroll to the target
-          $("html,body").animate( { scrollTop: $nextcell.offset().top } )
-
-          $nexttarget.focus()
+          e.preventDefault()
         # end
-        e.preventDefault()
-      # end
+      # end document.addEventListener
     # end
 
     # initial setting events
@@ -359,6 +375,7 @@ $ ->
       setting_events_of_cell( $(this) )
     # end
 
+    #------------------------------------------------------------------------------
     # this function is for books/index
     # edit name of books btn on click
     # books/indexで名前を変更した際に送信する
@@ -387,14 +404,38 @@ $ ->
         })
         .done (data) ->
           result = JSON.parse(data)
+        # end
         
         $book_name_area.find('.books_index_book_name').text(book_name)
         $this.text('名前変更')
       else
         $this.text('送信')
+      # end
       
       $this.toggleClass('active')
     # end edit name of books btn on click
+
+    $('.allow_show_checkbox').on 'change', ->
+      $this = $(this)
+      $book_names = $this.parents('.books_index_name_row').first().
+      children('.books_index_names').first()
+      book_id = parseInt( $book_names.data('bookid') )
+      if $this.prop('checked')
+        allow_flag = 'true'
+      else
+        allow_flag = 'false'
+      #end
+      $.ajax({
+          url: "/books/#{book_id}",
+          type: 'patch',
+          data: {
+            show_flag: allow_flag
+          }
+      })
+      .done (data) ->
+        result = JSON.parse(data)
+      # end
+    # end .allow_show_checkbox on change
 
   # end controller books
       

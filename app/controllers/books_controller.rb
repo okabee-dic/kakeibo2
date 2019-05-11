@@ -2,7 +2,7 @@ class BooksController < ApplicationController
   include BooksHelper
 
   before_action :authenticate_user!, except: [:show]
-  before_action :setting_id, only: [:edit, :update, :destroy, :get_balance]
+  before_action :setting_id, only: [:edit, :update, :destroy, :get_balance, :show]
   before_action :your_book?, only: [:edit, :update, :destroy, :get_balance]
   before_action :books_params, only: [:create]
 
@@ -81,59 +81,21 @@ class BooksController < ApplicationController
       end
     end
 
-    showing_start = Date.new(year, month, 1)
-    showing_end = Date.new(year, month, -1)
-    @showing_date = showing_start
-
-    incomes = @book.incomes.where("pay_date >= ? and pay_date <= ?", showing_start, showing_end)
-    receipts = @book.receipts.where("pay_date >= ? and pay_date <= ?", showing_start, showing_end)
-    monthlyinputs = @book.monthlyinputs.where("start_date <= ? and end_date >= ?", showing_start, showing_start)
-
-    @incomes = []
-    @receipts = []
-
-    # total result of incomes/receipts
-    @total_receipts = 0
-    @total_incomes = 0
-
-    # add monthly inputs
-    monthlyinputs.each do |m|
-      new_input = {
-        store_id: m.store_id,
-        price: m.price,
-        pay_date: Date.new(year, month, m.pay_date),
-      }
-
-      if m.is_income == true
-        data = @book.incomes.new(new_input)
-        @incomes.push(data)
-        @total_incomes = @total_incomes + m.price
-      else
-        data = @book.receipts.new(new_input)
-        @receipts.push(data)
-        @total_receipts = @total_receipts + m.price
-      end
-    end
-
-    # add incomes
-    incomes.each do |income|
-      @incomes.push(income)
-      @total_incomes = @total_incomes + income.price
-    end
-
-    #add receipts
-    receipts.each do |receipt|
-      @receipts.push(receipt)
-      @total_receipts = @total_receipts + receipt.price
-    end
+    # get receipts
+    my_receipts = get_receipts_list(year, month)
+    @receipts = my_receipts[:receipts]
+    @incomes = my_receipts[:incomes]
+    @total_receipts = my_receipts[:total_receipts]
+    @total_incomes = my_receipts[:total_incomes]
+    @total_result = my_receipts[:total_balance]
 
     @incomes.sort_by! { |income| income.pay_date.day }
     @receipts.sort_by! { |receipt| receipt.pay_date.day }
 
-    @total_result = (@total_incomes - @total_receipts)
     @total_receipts = @total_receipts.to_s(:delimited)
     @total_incomes = @total_incomes.to_s(:delimited)
 
+    # add ▲ when result is negative
     if @total_result < 0
       @total_result = "▲#{(-1 * @total_result).to_s(:delimited)}"
     else
@@ -145,11 +107,76 @@ class BooksController < ApplicationController
     @month = month
   end
 
+  def show
+    # book/[bookid]/show/[year]/[month]
+    # setting month and year
+
+    # only on allow_show flag is enabled, exec this method.
+    if @book.allow_show == false
+      return redirect_to :root
+    end
+    today = Date.today
+    year = today.year
+    month = today.month
+
+    if params[:month]
+      month = params[:month].to_i
+    end
+
+    if params[:year]
+      # year must be over 0
+      if params[:year].to_i > 0
+        year = params[:year].to_i
+      else
+        return redirect_to :root
+      end
+    end
+
+    # get receipts
+    my_receipts = get_receipts_list(year, month)
+    @receipts = my_receipts[:receipts]
+    @incomes = my_receipts[:incomes]
+    @total_receipts = my_receipts[:total_receipts]
+    @total_incomes = my_receipts[:total_incomes]
+    @total_result = my_receipts[:total_balance]
+
+    @incomes.sort_by! { |income| income.pay_date.day }
+    @receipts.sort_by! { |receipt| receipt.pay_date.day }
+
+    @total_receipts = @total_receipts.to_s(:delimited)
+    @total_incomes = @total_incomes.to_s(:delimited)
+
+    # add ▲ when result is negative
+    if @total_result < 0
+      @total_result = "▲#{(-1 * @total_result).to_s(:delimited)}"
+    else
+      @total_result = @total_result.to_s(:delimited)
+    end
+
+    @stores = @book.stores.all
+    @year = year
+    @month = month
+
+    render :template => "books/edit"
+  end
+
   # update method is updating book's name
   def update
     name = params[:name]
+    show_flag = params[:show_flag]
+
+    if name == nil
+      name = @book.name
+    end
+    if show_flag == nil
+      show_flag = @book.allow_show
+    end
+
+    binding.pry
+
     @book.update!({
       name: name,
+      allow_show: show_flag,
     })
 
     result = {
@@ -190,7 +217,7 @@ class BooksController < ApplicationController
   protected
 
   def books_params
-    result = params.require(:book).permit(:name)
+    result = params.require(:book).permit(:name, :show_flag)
     result
   end
 
