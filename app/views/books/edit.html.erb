@@ -1,8 +1,10 @@
 <article id="book_edit" class="h100p mh100p">
 	<div class="flex align_items_stretch fullheight_with_bottomview">
+		<% unless controller.action_name == 'show' %>
 		<aside class="book_sidebar">
 			<%= render 'books/sidebar' %>
 		</aside>
+		<% end %>
 		<div class="container w100p center padding_for_bottomview content-box mt10">
 			<h2 class="flex center">
 				<div class="page_title underlined pink">

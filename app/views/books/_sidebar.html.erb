@@ -1,17 +1,22 @@
 <ul class="book_sidebar_items">
-  <%= link_to edit_book_path(@book_id) do %>
-  <li>家計簿を編集する</li>
-  <% end %>
-  <%= link_to book_stores_path(@book_id) do %>
-  <li>店舗情報を編集する</li>
-  <% end %>
-  <%= link_to book_monthlyinputs_path(@book_id) do %>
-  <li>月ごとの自動入力を編集する</li>
-  <% end %>
-  <%= link_to new_book_csv_uploader_path(@book_id) do %>
-  <li>CSVファイルから追加する</li>
-  <% end %>
-  <%= link_to linegraph_book_graphs_path(@book_id) do %>
-  <li>グラフを見る</li>
-  <% end %>
+	<%= link_to edit_book_path(@book_id) do %>
+	<li>家計簿を編集する</li>
+	<% end %>
+	<%= link_to book_stores_path(@book_id) do %>
+	<li>店舗情報を編集する</li>
+	<% end %>
+	<%= link_to book_monthlyinputs_path(@book_id) do %>
+	<li>月ごとの自動入力を編集する</li>
+	<% end %>
+	<%= link_to new_book_csv_uploader_path(@book_id) do %>
+	<li>CSVファイルから追加する</li>
+	<% end %>
+	<%= link_to linegraph_book_graphs_path(@book_id) do %>
+	<li>グラフを見る</li>
+	<% end %>
+	<% if @book.allow_show && controller.action_name == 'edit' %>
+	<%= link_to show_book_in_month_books_path(@book_id, @year, @month) do %>
+	<li>このページの公開アドレス</li>
+	<% end %>
+	<% end %>
 </ul>
