@@ -172,7 +172,7 @@ class BooksController < ApplicationController
       show_flag = @book.allow_show
     end
 
-    binding.pry
+    #binding.pry
 
     @book.update!({
       name: name,
