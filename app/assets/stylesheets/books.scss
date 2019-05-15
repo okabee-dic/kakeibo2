@@ -121,13 +121,14 @@
   #book_edit_total_container {
     background-color: #6c9ac5;
     color: white;
-    padding: 10px 20px;
+    padding: 1rem 2rem;
     width: 100%;
     opacity: 0.9;
+    height: 7rem;
 
     .total_caption {
       font-size: 1.0rem;
-      padding-bottom: 4px;
+      padding-bottom: 0.4rem;
       font-weight: 600;
     }
 
