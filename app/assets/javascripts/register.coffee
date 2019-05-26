@@ -2,20 +2,21 @@ $ ->
   controller = $('body').first().data('controller')
   action = $('body').first().data('action')
 
-  # only exec on registrations controller
-  if controller == 'registrations' || controller == 'omniauth_callbacks'
-    if action == 'new' || action == 'edit' || action == 'create' ||
-    action == 'update' || action == 'oauth_registration' || action == 'facebook'
+  # called only in needed action
+  if (controller == 'registrations' &&
+  (action == 'new' || action == 'edit' || action == 'create' || action == 'update') ) ||
+  (controller == 'omniauth_callbacks' && (action == 'oauth_registration' || action == 'facebook') )
 
-      $('#postcode').jpostal({
-        postcode: $('#postcode'),
-        address: {
-                 "#user_prefecture_name": "%3", # 都道府県が入力される
-                 "#address": "%4%5%6", # 市区町村と町域が入力される
-                 "#building": "%7" # 大口事務所の番地と名称が入力される
-               }
-      })
-  
+    # get address from postcode
+    $('#postcode').jpostal({
+      postcode: $('#postcode'),
+      address: {
+               "#user_prefecture_name": "%3", # 都道府県が入力される
+               "#address": "%4%5%6", # 市区町村と町域が入力される
+               "#building": "%7" # 大口事務所の番地と名称が入力される
+             }
+    })
+
     # check_username
     $('#username').on 'input', ->
       username = $('#username').val()
@@ -37,3 +38,5 @@ $ ->
       
       .fail (jqXHR, textStatus, errorThrown) ->
         $('#username_checkresult').text('通信エラーです。')
+    # end on username inputed
+  # end limit actions

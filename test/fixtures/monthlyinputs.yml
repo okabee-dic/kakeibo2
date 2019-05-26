@@ -4,8 +4,17 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
+one: 
+  book_id: 1
+  price: 400
+  pay_date: 10
+  is_income: false
+
 # column: value
 #
-two: {}
+two: 
+  book_id: 1
+  price: 300
+  pay_date: 20
+  is_income: true
 # column: value

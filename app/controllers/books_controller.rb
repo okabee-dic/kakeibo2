@@ -1,3 +1,5 @@
+require "./app/services/books/get_receipts_list.rb"
+
 class BooksController < ApplicationController
   include BooksHelper
 
@@ -18,23 +20,7 @@ class BooksController < ApplicationController
       if book.persisted?
         # create default stores
         # デフォルトの店舗情報を追加
-
-        # default receipt
-        genre_id = Genre.find_by(:income => false).id
-        store = book.stores.create({
-          name: "支出",
-          genre_id: genre_id,
-          is_income: false,
-          locked: true,
-        })
-        # default income
-        genre_id = Genre.find_by(:income => true).id
-        store = book.stores.create({
-          name: "収入",
-          genre_id: genre_id,
-          is_income: true,
-          locked: true,
-        })
+        Store::create_default(book.id)
 
         flash[:notice] = "家計簿を作成しました。"
         redirect_to edit_book_path(book.id)
@@ -64,98 +50,50 @@ class BooksController < ApplicationController
   def edit
     # book/[bookid]/edit/[year]/[month]
     # setting month and year
-    today = Date.today
-    year = today.year
-    month = today.month
 
-    if params[:month]
-      month = params[:month].to_i
-    end
-
-    if params[:year]
-      # year must be over 0
-      if params[:year].to_i > 0
-        year = params[:year].to_i
-      else
-        return redirect_to :root
-      end
-    end
+    year, month = get_date()
+    @year = year
+    @month = month
 
     # get receipts
-    my_receipts = get_receipts_list(year, month)
+    my_receipts = GetReceiptsListService.new(@book.id, year, month).exec
     @receipts = my_receipts[:receipts]
     @incomes = my_receipts[:incomes]
-    @total_receipts = my_receipts[:total_receipts]
-    @total_incomes = my_receipts[:total_incomes]
-    @total_result = my_receipts[:total_balance]
+    @total_receipts = price_to_string(my_receipts[:total_receipts])
+    @total_incomes = price_to_string(my_receipts[:total_incomes])
+    @total_result = price_to_string(my_receipts[:total_balance])
 
     @incomes.sort_by! { |income| income.pay_date.day }
     @receipts.sort_by! { |receipt| receipt.pay_date.day }
 
-    @total_receipts = @total_receipts.to_s(:delimited)
-    @total_incomes = @total_incomes.to_s(:delimited)
-
-    # add ▲ when result is negative
-    if @total_result < 0
-      @total_result = "▲#{(-1 * @total_result).to_s(:delimited)}"
-    else
-      @total_result = @total_result.to_s(:delimited)
-    end
-
     @stores = @book.stores.all
-    @year = year
-    @month = month
   end
 
   def show
     # book/[bookid]/show/[year]/[month]
     # setting month and year
 
+    year, month = get_date()
+    @year = year
+    @month = month
+
     # only on allow_show flag is enabled, exec this method.
     if @book.allow_show == false
       return redirect_to :root
     end
-    today = Date.today
-    year = today.year
-    month = today.month
-
-    if params[:month]
-      month = params[:month].to_i
-    end
-
-    if params[:year]
-      # year must be over 0
-      if params[:year].to_i > 0
-        year = params[:year].to_i
-      else
-        return redirect_to :root
-      end
-    end
 
     # get receipts
-    my_receipts = get_receipts_list(year, month)
+    my_receipts = GetReceiptsListService.new(@book.id, year, month).exec
     @receipts = my_receipts[:receipts]
     @incomes = my_receipts[:incomes]
-    @total_receipts = my_receipts[:total_receipts]
-    @total_incomes = my_receipts[:total_incomes]
-    @total_result = my_receipts[:total_balance]
+    @total_receipts = price_to_string(my_receipts[:total_receipts])
+    @total_incomes = price_to_string(my_receipts[:total_incomes])
+    @total_result = price_to_string(my_receipts[:total_balance])
 
     @incomes.sort_by! { |income| income.pay_date.day }
     @receipts.sort_by! { |receipt| receipt.pay_date.day }
 
-    @total_receipts = @total_receipts.to_s(:delimited)
-    @total_incomes = @total_incomes.to_s(:delimited)
-
-    # add ▲ when result is negative
-    if @total_result < 0
-      @total_result = "▲#{(-1 * @total_result).to_s(:delimited)}"
-    else
-      @total_result = @total_result.to_s(:delimited)
-    end
-
     @stores = @book.stores.all
-    @year = year
-    @month = month
 
     render :template => "books/edit"
   end
@@ -172,8 +110,6 @@ class BooksController < ApplicationController
       show_flag = @book.allow_show
     end
 
-    #binding.pry
-
     @book.update!({
       name: name,
       allow_show: show_flag,
@@ -189,14 +125,12 @@ class BooksController < ApplicationController
   # get_balance method is called when receipts are changed.
   # レシート情報が更新された際に呼ばれて収入と支出の情報を返す
   def get_balance
-    month = params[:month].to_i
-    year = params[:year].to_i
     target = params[:target] # receipts, incomes, balance, all
 
-    month = Date.today.month if month == nil
-    year = Date.today.year if year == nil
+    year, month = get_date()
 
-    receipts_list = get_receipts_list(year, month)
+    #receipts_list = get_receipts_list(year, month)
+    receipts_list = GetReceiptsListService.new(@book.id, year, month).exec
 
     if target == "receipts"
       render plain: receipts_list[:total_receipts]
@@ -226,63 +160,36 @@ class BooksController < ApplicationController
     @book = Book.find(@book_id)
   end
 
-  def get_receipts_list(year, month)
-    # need @book
-    showing_start = Date.new(year, month, 1)
-    showing_end = Date.new(year, month, -1)
-    @showing_date = showing_start
+  def get_date
+    today = Date.today
+    year = today.year
+    month = today.month
 
-    incomes = @book.incomes.where("pay_date >= ? and pay_date <= ?", showing_start, showing_end)
-    receipts = @book.receipts.where("pay_date >= ? and pay_date <= ?", showing_start, showing_end)
-    monthlyinputs = @book.monthlyinputs.where("start_date <= ? and end_date >= ?", showing_start, showing_start)
+    if params[:month]
+      month = params[:month].to_i
+    end
 
-    incomes_array = []
-    receipts_array = []
-
-    # total result of incomes/receipts
-    total_receipts = 0
-    total_incomes = 0
-
-    # add monthly inputs
-    monthlyinputs.each do |m|
-      new_input = {
-        store_id: m.store_id,
-        price: m.price,
-        pay_date: Date.new(year, month, m.pay_date),
-      }
-
-      if m.is_income == true
-        data = @book.incomes.new(new_input)
-        incomes_array.push(data)
-        total_incomes = total_incomes + m.price
+    if params[:year]
+      # year must be over 0
+      if params[:year].to_i > 0
+        year = params[:year].to_i
       else
-        data = @book.receipts.new(new_input)
-        receipts_array.push(data)
-        total_receipts = total_receipts + m.price
+        return redirect_to :root
       end
     end
 
-    # add incomes
-    incomes.each do |income|
-      incomes_array.push(income)
-      total_incomes = total_incomes + income.price
+    @showing_date = Date.new(year, month, 1)
+
+    [year, month]
+  end
+
+  def price_to_string(price)
+    # add ▲ when result is negative
+    if price < 0
+      result = "▲#{(-1 * price).to_s(:delimited)}"
+    else
+      result = price.to_s(:delimited)
     end
-
-    #add receipts
-    receipts.each do |receipt|
-      receipts_array.push(receipt)
-      total_receipts = total_receipts + receipt.price
-    end
-
-    total_balance = (total_incomes - total_receipts)
-
-    result = {
-      total_balance: total_balance,
-      total_incomes: total_incomes,
-      total_receipts: total_receipts,
-      incomes: incomes_array,
-      receipts: receipts_array,
-    }
 
     result
   end

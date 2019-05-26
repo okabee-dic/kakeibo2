@@ -66,7 +66,6 @@ $ ->
           total_incomes += price
 
         total_result = total_incomes - total_receipts
-        # end
 
         window.book_edit_total_result = total_result
         window.book_edit_total_incomes = total_incomes
@@ -74,7 +73,7 @@ $ ->
 
         showing_balance(total_receipts, total_incomes, total_result)
 
-      # end fail
+      # end fail()
     # end calc_balance
 
     # the function showing the balance
@@ -243,50 +242,44 @@ $ ->
           
         $parent.children("[data-rowid=\"#{id}\"]").remove()
 
-      # reset events
-      #setting_events_of_cell()
-
       # calc balance
       # calc after DOM remove
       window.setTimeout(calc_balance, 1000)
         
       .fail (data) ->
         alert('データの削除に失敗しました。')
-      # end
     # end delete_btn_on_click
 
     # the function that is setting events of cell when DOM is created.
     # DOM要素が追加された際にイベントを設定する関数
     # do not fire events when this script is called by 'show' action.
     # show メソッドの場合は、編集できないようにするため、イベントを呼び出さない。
-    setting_events_of_cell = ($row) ->
-      # on click delete btn
-      if( $('body').data('action') != "show")
+    if( $('body').data('action') != "show")
+      setting_events_of_cell = ($row) ->
+        
+        # on click delete btn
         $row.find('.book_edit_delete_btn').each ->
           $btn = $(this)
           $btn.on 'click', ->
             delete_btn_on_click(this)
-          # end
         # end delete btn on click
-      # end
 
-      # set same width to cells and inputs
-      # セルとinputのサイズを合わせる
-      set_width_to_cells_and_inputs = ($cell) ->
-        $input = $cell.children('input').first()
-        $input.width( $cell.width() )
-      # end
-    
-      # set width on load
-      # セル内のテキストとテキストボックスの幅を揃える
-      $row.find('.book_edit_cell').each ->
-        set_width_to_cells_and_inputs( $(this) )
-      # end
-
-      # on focus edit cell
-      # toggle to show the input and hide the text
-      # セルをクリックするとinputに切り替える
-      if( $('body').data('action') != "show")
+        # set same width to cells and inputs
+        # セルとinputのサイズを合わせる
+        set_width_to_cells_and_inputs = ($cell) ->
+          $input = $cell.children('input').first()
+          $input.width( $cell.width() )
+        # end set_width_to_cells_and_inputs()
+      
+        # set width on load
+        # セル内のテキストとテキストボックスの幅を揃える
+        $row.find('.book_edit_cell').each ->
+          set_width_to_cells_and_inputs( $(this) )
+        # end $row.find('.book_edit_cell').each
+  
+        # on focus edit cell
+        # toggle to show the input and hide the text
+        # セルをクリックするとinputに切り替える
         $row.find('.book_edit_cell').each ->
           $(this).on 'click', ->
             $this = $(this)
@@ -298,13 +291,11 @@ $ ->
             $this.children('input').first().focus()
           # end
         # end
-      #end
-  
-      $row.find('.book_edit_cell_input').each ->
-        # on focus out, send data and toggle showing of input and text
-        # inputからフォーカスが外れると編集したデータを送信
-        # 送信後、inputを非表示にしてテキストを表示する
-        if( $('body').data('action') != "show")
+    
+        $row.find('.book_edit_cell_input').each ->
+          # on focus out, send data and toggle showing of input and text
+          # inputからフォーカスが外れると編集したデータを送信
+          # 送信後、inputを非表示にしてテキストを表示する
           $(this).on 'blur', ->
             $this = $(this)
             # if price, add separates
@@ -324,14 +315,12 @@ $ ->
             # resize input width to new cell width
             $this.closest('tbody').find('.book_edit_cell').each ->
               set_width_to_cells_and_inputs( $(this) )
-            # end
           # end blur
-        # end
-      # end edit_input each
-    # end setting_events_of_cell
-
-    # on press Tab button
-    if( $('body').data('action') != "show")
+        # end edit_input each
+      # end setting_events_of_cell()
+    
+      # on press Tab button
+      # on show action, not fire this event.
       document.addEventListener 'keydown', (e) ->
         # Tab or Enter
         if e.keyCode == 9 || e.keyCode == 13
@@ -344,27 +333,21 @@ $ ->
             $nextcell = $editcells.eq(cellindex + 1)
           
             if $editcells.length == cellindex + 1
-              if e.keyCode == 9
-                # on Tab, go to first
-                $nextcell = $target.closest('table').find('.book_edit_cell').first()
-              else
-                # on Enter, go to new input
-                target.blur()
-                $nextcell = $target.closest('.book_edit_table_new_row')
-                .children('.column_pay_date').first()
-              # end
+              # go to new input
+              target.blur()
+              $nextcell = $target.closest('.book_edit_table_new_row')
+              .children('.column_pay_date').first()
             # end
-
-            $nexttarget = $nextcell.addClass('editting').find('input').first()
+            
             # scroll to the target
+            $nexttarget = $nextcell.addClass('editting').find('input').first()
             $("html,body").animate( { scrollTop: $nextcell.offset().top } )
-
             $nexttarget.focus()
           # end
           e.preventDefault()
         # end
       # end document.addEventListener
-    # end
+    # end if( $('body').data('action') != "show")
 
     # initial setting events
     $('.book_edit_table_row').each ->
@@ -376,7 +359,9 @@ $ ->
     # end
 
     #------------------------------------------------------------------------------
-    # this function is for books/index
+    # function for books/index
+    #------------------------------------------------------------------------------
+
     # edit name of books btn on click
     # books/indexで名前を変更した際に送信する
     $('.books_index_edit_name_btn').on 'click', ->
@@ -415,6 +400,7 @@ $ ->
       $this.toggleClass('active')
     # end edit name of books btn on click
 
+    # function called when '.allow_show_checkbox' are changed.
     $('.allow_show_checkbox').on 'change', ->
       $this = $(this)
       $book_names = $this.parents('.books_index_name_row').first().
@@ -425,6 +411,7 @@ $ ->
       else
         allow_flag = 'false'
       #end
+
       $.ajax({
           url: "/books/#{book_id}",
           type: 'patch',
@@ -434,6 +421,8 @@ $ ->
       })
       .done (data) ->
         result = JSON.parse(data)
+      .fail (data) ->
+        alert('データの送信に失敗しました。')
       # end
     # end .allow_show_checkbox on change
 

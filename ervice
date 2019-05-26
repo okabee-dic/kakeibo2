@@ -1,0 +1,32 @@
+
+[1mFrom:[0m /home/vagrant/projects/kakeibo2/app/controllers/books_controller.rb @ line 204 BooksController#get_balance:
+
+    [1;34m191[0m: [32mdef[0m [1;34mget_balance[0m
+    [1;34m192[0m:   month = params[[33m:month[0m].to_i
+    [1;34m193[0m:   year = params[[33m:year[0m].to_i
+    [1;34m194[0m:   target = params[[33m:target[0m] [1;34m# receipts, incomes, balance, all[0m
+    [1;34m195[0m: 
+    [1;34m196[0m:   month = [1;34;4mDate[0m.today.month [32mif[0m month == [1;36mnil[0m
+    [1;34m197[0m:   year = [1;34;4mDate[0m.today.year [32mif[0m year == [1;36mnil[0m
+    [1;34m198[0m: 
+    [1;34m199[0m:   [1;34m#receipts_list = get_receipts_list(year, month)[0m
+    [1;34m200[0m:   service = [1;34;4mGetReceiptsListService[0m.new(@book.id, year, month)
+    [1;34m201[0m:   service.exec
+    [1;34m202[0m:   binding.pry
+    [1;34m203[0m: 
+ => [1;34m204[0m:   [32mif[0m target == [31m[1;31m"[0m[31mreceipts[1;31m"[0m[31m[0m
+    [1;34m205[0m:     render [35mplain[0m: receipts_list[[33m:total_receipts[0m]
+    [1;34m206[0m:   [32melsif[0m target == [31m[1;31m"[0m[31mincomes[1;31m"[0m[31m[0m
+    [1;34m207[0m:     render [35mplain[0m: receipts_list[[33m:total_incomes[0m]
+    [1;34m208[0m:   [32melsif[0m target == [31m[1;31m"[0m[31mbalance[1;31m"[0m[31m[0m
+    [1;34m209[0m:     render [35mplain[0m: receipts_list[[33m:total_balance[0m]
+    [1;34m210[0m:   [32melse[0m
+    [1;34m211[0m:     result = {
+    [1;34m212[0m:       [35mreceipts[0m: receipts_list[[33m:total_receipts[0m],
+    [1;34m213[0m:       [35mincomes[0m: receipts_list[[33m:total_incomes[0m],
+    [1;34m214[0m:       [35mbalance[0m: receipts_list[[33m:total_balance[0m],
+    [1;34m215[0m:     }
+    [1;34m216[0m:     render [35mplain[0m: result.to_json
+    [1;34m217[0m:   [32mend[0m
+    [1;34m218[0m: [32mend[0m
+
