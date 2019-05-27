@@ -27,76 +27,14 @@ class CsvUploaderController < ApplicationController
         next
       end
 
-      store_name = ""
-
-      # input to variables
-      unless is_multimode
-        price = row[2].to_i
-        pay_date = row[0].to_i
-        store_name = row[1]
-      else
-        price = row[4].to_i
-        pay_date = row[2].to_i
-        store_name = row[3]
-        month = row[1].to_i
-        year = row[0].to_i
-        # year must be over 0
-        if year <= 0
-          year = nil
-        end
-      end
-
-      # data check
-      if price == nil || pay_date == nil || store_name == nil || year == nil || month == nil
-        next
-      end
-      if pay_date == 0 || month == 0
+      # skip when short of columns
+      if row.length < 3 || (is_multimode && row.length < 5)
         next
       end
 
-      if row.length >= 3
-        if (price < 0)
-          #receipt
-          store = find_store(store_name, false)
-          date = Date.new(year, month, pay_date)
-          if date == nil
-            next
-          end
-          writedata = {
-            pay_date: date,
-            price: -1 * price,
-            store_id: store.id,
-          }
-          receipt = @book.receipts.new(writedata)
-          if receipt.save
-            add_count = add_count + 1
-          end
-        elsif price == 0
-          # do nothing
-        else
-          #income
-          store = find_store(store_name, true)
-          date = Date.new(year, month, pay_date)
-          if date == nil
-            next
-          end
-          writedata = {
-            pay_date: date,
-            price: price,
-            store_id: store.id,
-          }
-
-          income = @book.incomes.new(writedata)
-          if income.save
-            add_count = add_count + 1
-          end
-        end
-      else
-        # csv is too short
-        # do nothing
-      end
+      add_count += add_csvdata!(row, is_multimode, year, month)
     end
-    # end add from csv
+
     if add_count > 0
       flash[:notice] = "CSVから#{add_count}個のデータを追加しました。"
     else
@@ -110,5 +48,75 @@ class CsvUploaderController < ApplicationController
 
   def uploader_params
     params.permit(:upload_file, :date)
+  end
+
+  def add_csvdata!(row, is_multimode, year, month)
+    # initialize
+    store_name = ""
+    add_count = 0
+    price = 0
+    pay_date = 0
+
+    # input to variables
+    unless is_multimode
+      price = row[2].to_i
+      pay_date = row[0].to_i
+      store_name = row[1]
+    else
+      price = row[4].to_i
+      pay_date = row[2].to_i
+      store_name = row[3]
+      month = row[1].to_i
+      year = row[0].to_i
+      # year must be over 0
+      if year <= 0
+        year = nil
+      end
+    end
+    # data check
+    if price == nil || pay_date == nil || store_name == nil || year == nil || month == nil
+      return 0
+    end
+    if pay_date == 0 || month == 0
+      return 0
+    end
+    if (price < 0)
+      #receipt
+      store = find_store(store_name, false)
+      date = Date.new(year, month, pay_date)
+      if date == nil
+        return 0
+      end
+      writedata = {
+        pay_date: date,
+        price: -1 * price,
+        store_id: store.id,
+      }
+      receipt = @book.receipts.new(writedata)
+      if receipt.save
+        add_count = add_count + 1
+      end
+    elsif price == 0
+      # do nothing
+    else
+      #income
+      store = find_store(store_name, true)
+      date = Date.new(year, month, pay_date)
+      if date == nil
+        return 0
+      end
+      writedata = {
+        pay_date: date,
+        price: price,
+        store_id: store.id,
+      }
+      income = @book.incomes.new(writedata)
+      if income.save
+        add_count = add_count + 1
+      end
+    end
+    # end add from csv
+
+    add_count
   end
 end
