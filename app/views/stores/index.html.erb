@@ -117,7 +117,7 @@
                 <td>
                   <% if store.locked == false %>
                   <%= link_to book_store_path(@book_id, store.id), method: :delete do %>
-                  <button>削除</button>
+                  <button class="confirmDeleteOnClick">削除</button>
                   <% end %>
                   <% else %>
                   -

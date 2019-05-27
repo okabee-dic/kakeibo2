@@ -10,6 +10,7 @@ $ ->
       token = $('meta[name="csrf-token"]').attr('content')
       if (token) 
         return jqXHR.setRequestHeader('X-CSRF-Token', token)
+  # end CSRF token
   
   # match height class
   mh_class_callback = ->
@@ -22,13 +23,13 @@ $ ->
         # end
       # end
     # end
-  # end
+  # end mh_class_callback
 
   mh_class_callback()
 
   $('window').on 'resize', ->
     mh_class_callback()
-  # end
+  # end on resize
 
   # separated area accordion
   $('.separated_area').each ->
@@ -43,5 +44,10 @@ $ ->
     if $this.hasClass('hide')
       $this.find('.separated_area_content').first().slideUp()
     # end
-  # end
+  # end each separated area
 
+  $('.confirmDeleteOnClick').on 'click', (e) ->
+    if !window.confirm('削除しますか？')
+      return false
+  # end .confirmDeleteOnClick onclick
+# end $

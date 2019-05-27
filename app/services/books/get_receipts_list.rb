@@ -28,7 +28,7 @@ class GetReceiptsListService
       new_input = {
         store_id: m.store_id,
         price: m.price,
-        pay_date: Date.new(year, month, m.pay_date),
+        pay_date: Date.new(@year, @month, m.pay_date),
       }
 
       if m.is_income
