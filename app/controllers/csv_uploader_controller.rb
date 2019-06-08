@@ -80,6 +80,7 @@ class CsvUploaderController < ApplicationController
     if pay_date == 0 || month == 0
       return 0
     end
+
     if (price < 0)
       #receipt
       store = find_store(store_name, false)

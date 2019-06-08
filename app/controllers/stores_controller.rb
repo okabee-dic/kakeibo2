@@ -40,14 +40,8 @@ class StoresController < ApplicationController
     if store[:locked]
       update_data[:name] = store[:name]
       update_data[:genre_id] = store[:genre_id]
-      update_data[:is_income] = store[:is_income]
       message_success = "ロックされている店舗情報は表示順のみ変えることができます。"
     end
-
-    # is_income data is automatic setting from genre_id
-    #if update_data[:genre_id] != store[:genre_id]
-    #  update_data[:is_income] = Genre.find(update_data[:genre_id]).income
-    #end
 
     # is_income must not be changed.
     update_data[:is_income] = store[:is_income]
@@ -71,6 +65,7 @@ class StoresController < ApplicationController
     end
 
     # if the store is setted in any books, set another store
+    # 削除する店舗が使用されている場合、別の店舗を設定する
     alter_store = @book.stores.where(:locked => true, :is_income => store.is_income).first
 
     if store.is_income == true
@@ -79,7 +74,7 @@ class StoresController < ApplicationController
       receipt_table = @book.receipts
     end
     receipt_table.where(:store_id => store.id).find_each do |receipt|
-      receipt.update({store_id: alter_store.id})
+      receipt.update({ store_id: alter_store.id })
     end
 
     # deleting the store

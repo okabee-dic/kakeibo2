@@ -1,3 +1,5 @@
+require "./app/services/books/get_receipts_list.rb"
+
 class GraphsController < ApplicationController
   include BooksHelper
   before_action :setting_book_id
@@ -7,11 +9,7 @@ class GraphsController < ApplicationController
   end
 
   def linegraph
-    years = []
-    months = []
-    spends_array = []
-    incomes_array = []
-    totals = []
+    # data array for linegraph
     gon.labels = []
     gon.spends = []
     gon.incomes = []
@@ -19,53 +17,54 @@ class GraphsController < ApplicationController
 
     @number_of_monthes = 12
 
-    @month = Date.today.month
-    @year = Date.today.year
-    if params[:month]
-      @month = params[:month].to_i
-    end
-    if params[:year]
-      @year = params[:year].to_i
-    end
-    showing_date = Date.new(@year, @month, 1)
-    @showing_date = showing_date
+    date_array = make_date(params[:year], params[:month])
+    @year = date_array[:year]
+    @month = date_array[:month]
+    @showing_date = date_array[:showing_date]
 
-    # get 12 months data
+    graphdata = get_graphdata(@number_of_monthes, @showing_date)
+
+    # reverse data and input to gon
     for i in 0..@number_of_monthes
+      gon.incomes << graphdata[:incomes_array][@number_of_monthes - i]
+      gon.spends << graphdata[:spends_array][@number_of_monthes - i]
+      gon.totals << graphdata[:totals][@number_of_monthes - i]
+      gon.labels << graphdata[:months][@number_of_monthes - i]
+    end
+  end
+
+  private
+
+  def get_graphdata(number_of_monthes, showing_date)
+    spends_array = []
+    incomes_array = []
+    totals = []
+    years = []
+    months = []
+
+    for i in 0..number_of_monthes
       i_date = showing_date.prev_month(i)
       year = i_date.year
       month = i_date.month
       years.push(year)
       months.push(month)
-      month_start = Date.new(year, month, 1)
-      month_end = Date.new(year, month, -1)
 
-      incomes = @book.incomes.where("pay_date >= ? and pay_date <= ?", month_start, month_end)
-      receipts = @book.receipts.where("pay_date >= ? and pay_date <= ?", month_start, month_end)
-      monthlyinputs = @book.monthlyinputs.where("start_date <= ? and end_date >= ?",
-                                                month_start, month_start)
+      my_receipts = GetReceiptsListService.new(@book.id, year, month).exec
 
-      incomes_total = incomes.sum("price")
-      receipts_total = receipts.sum("price")
-      monthlyinputs.each do |m|
-        if m.is_income == true
-          incomes_total = incomes_total + m.price
-        else
-          receipts_total = receipts_total + m.price
-        end
-      end
-
-      spends_array.push(receipts_total)
-      incomes_array.push(incomes_total)
-      totals.push(incomes_total - receipts_total)
+      spends_array.push(my_receipts[:total_receipts])
+      incomes_array.push(my_receipts[:total_incomes])
+      totals.push(my_receipts[:total_balance])
     end
 
-    # reverse data
-    for i in 0..@number_of_monthes
-      gon.incomes << incomes_array[@number_of_monthes - i]
-      gon.spends << spends_array[@number_of_monthes - i]
-      gon.totals << totals[@number_of_monthes - i]
-      gon.labels << months[@number_of_monthes - i]
-    end
+    # create result
+    result = {
+      spends_array: spends_array,
+      incomes_array: incomes_array,
+      totals: totals,
+      years: years,
+      months: months,
+    }
+
+    result
   end
 end
