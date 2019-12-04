@@ -299,7 +299,7 @@ body {
 /*---------------------------------
  * common btn
  *---------------------------------*/
- .commonbtn {
+.commonbtn {
   position: relative;
   display: inline-block;
   padding: 0.6rem;
@@ -309,8 +309,8 @@ body {
   background: #5a99d7;
   border: solid 1px #0f9ada;
   border-radius: 4px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
-  text-shadow: 0 1px 0 rgba(0,0,0,0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 
   &:active {
     border: solid 1px #03A9F4;
@@ -471,12 +471,12 @@ body {
 @keyframes flashMessageAnimation {
   0% {
     opacity: 0.9;
-    visibility:visible;
+    visibility: visible;
   }
 
   100% {
     opacity: 0;
-    visibility:hidden;
+    visibility: hidden;
   }
 }
 
@@ -493,7 +493,8 @@ body {
     border-color: #c37d96;
 
     .highlighted {
-      background-color: #d6467a; /*#d65080;*/
+      background-color: #d6467a;
+      /*#d65080;*/
     }
   }
 
@@ -521,7 +522,7 @@ body {
   }
 
   &.hide {
-    .caption{
+    .caption {
       &:before {
         transform: rotate(0deg);
       }
@@ -782,7 +783,7 @@ body {
 
     p {
       line-height: 6.0rem;
-      text-shadow: 6px 6px 4px rgba(0,0,0,0.1);
+      text-shadow: 6px 6px 4px rgba(0, 0, 0, 0.1);
       display: inline-block;
       position: relative;
       padding: 0 1rem;
@@ -811,11 +812,12 @@ body {
   .index_usage_container {
     display: flex;
     justify-content: center;
-    & > div:first-child {
+
+    &>div:first-child {
       width: 50%;
     }
   }
-  
+
   .index_usage_list {
     padding: 2rem 1rem;
 
@@ -834,7 +836,7 @@ body {
       padding: 1rem 2rem;
       align-items: center;
       display: flex;
-    } 
+    }
 
     .index_usage_title {
       font-size: 2.0rem;
@@ -921,7 +923,8 @@ body {
 .registration_form {
   padding: 1rem 0;
 
-  .field, .field_with_errors {
+  .field,
+  .field_with_errors {
     label {
       width: 14rem;
       line-height: 1.8rem;
@@ -949,7 +952,7 @@ body {
         content: '*';
         color: #d6467a;
       }
-      
+
     }
   }
 
@@ -996,8 +999,10 @@ body {
 /*-----------------------------
 /* media query 
 /*-----------------------------*/
+/*
 @media screen and (min-width: 1500px) {
   html {
     font-size: 100% !important;
   }
 }
+*/
